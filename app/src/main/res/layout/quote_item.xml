@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvQuotePreview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:maxLines="1"
+        android:text="ASDASD"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/tvQuoteAuthorPreview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvQuotePreview"
+        android:layout_marginTop="4dp"
+        android:layout_alignStart="@id/tvQuotePreview"
+        android:text="Da vinci"
+        android:textColor="#4E4E4E"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+
+
+
+</RelativeLayout>

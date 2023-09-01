@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "994592469538",
+    "project_id": "yourfamouscoach",
+    "storage_bucket": "yourfamouscoach.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:994592469538:android:c4fa91ae58a647c3fe507b",
+        "android_client_info": {
+          "package_name": "com.example.yourfamouscoach"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "994592469538-decf5bgu1c48on0s643qk2rq4774qtv3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASuXy6whVbfbLVnCkRy2bfg_3RRCe8sR0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "994592469538-decf5bgu1c48on0s643qk2rq4774qtv3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
