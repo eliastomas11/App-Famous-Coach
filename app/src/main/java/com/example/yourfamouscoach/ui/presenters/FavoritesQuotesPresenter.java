@@ -3,18 +3,16 @@ package com.example.yourfamouscoach.ui.presenters;
 import com.example.yourfamouscoach.ui.interfaces.IFavoritesQuotesPresenter;
 import com.example.yourfamouscoach.ui.interfaces.IFavoritesView;
 import com.example.yourfamouscoach.ui.mappers.PresentationMapper;
-import com.example.yourfamouscoach.ui.model.QuotePresentation;
 
 import java.util.List;
 
-import domain.model.Quote;
-import domain.usecase.favoritequotes.GetQuoteList;
+import com.example.yourfamouscoach.domain.model.Quote;
+import com.example.yourfamouscoach.domain.usecase.favoritequotes.GetQuoteList;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import utils.QuoteMapper;
 
 public class FavoritesQuotesPresenter implements IFavoritesQuotesPresenter {
 

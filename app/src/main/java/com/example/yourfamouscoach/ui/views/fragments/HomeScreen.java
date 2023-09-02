@@ -2,25 +2,22 @@ package com.example.yourfamouscoach.ui.views.fragments;
 
 import static android.provider.MediaStore.VOLUME_EXTERNAL_PRIMARY;
 
-import static utils.StorageUtils.GREATER;
-import static utils.StorageUtils.checkBuildPermissions;
-import static utils.StorageUtils.checkPermission;
-import static utils.StorageUtils.writeToFile;
+import static com.example.yourfamouscoach.utils.StorageUtils.GREATER;
+import static com.example.yourfamouscoach.utils.StorageUtils.checkBuildPermissions;
+import static com.example.yourfamouscoach.utils.StorageUtils.checkPermission;
+import static com.example.yourfamouscoach.utils.StorageUtils.writeToFile;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -32,7 +29,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -45,20 +41,15 @@ import com.example.yourfamouscoach.ui.interfaces.IHomePresenter;
 import com.example.yourfamouscoach.ui.interfaces.IHomeView;
 import com.example.yourfamouscoach.ui.resources.Emojis;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
-import di.AppContainer;
-import di.MyApplication;
-import utils.StorageUtils;
+import com.example.yourfamouscoach.di.AppContainer;
+import com.example.yourfamouscoach.di.MyApplication;
+import com.example.yourfamouscoach.utils.StorageUtils;
 
 
 public class HomeScreen extends Fragment implements IHomeView {

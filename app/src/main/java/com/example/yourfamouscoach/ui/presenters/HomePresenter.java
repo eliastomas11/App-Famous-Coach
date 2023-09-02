@@ -8,17 +8,17 @@ import com.example.yourfamouscoach.ui.model.QuotePresentation;
 
 import java.util.List;
 
-import domain.model.Quote;
-import domain.usecase.homescreen.GetQuotes;
-import domain.usecase.homescreen.SaveQuote;
-import domain.usecase.homescreen.SpecificQuote;
+import com.example.yourfamouscoach.domain.model.Quote;
+import com.example.yourfamouscoach.domain.usecase.homescreen.GetQuotes;
+import com.example.yourfamouscoach.domain.usecase.homescreen.SaveQuote;
+import com.example.yourfamouscoach.domain.usecase.homescreen.SpecificQuote;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import utils.QuoteMapper;
+import com.example.yourfamouscoach.utils.QuoteMapper;
 
 public class HomePresenter implements IHomePresenter {
 

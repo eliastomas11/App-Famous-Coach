@@ -2,11 +2,10 @@ package com.example.yourfamouscoach.ui.mappers;
 
 import com.example.yourfamouscoach.ui.model.QuotePresentation;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import domain.model.Quote;
+import com.example.yourfamouscoach.domain.model.Quote;
 
 public class PresentationMapper {
 

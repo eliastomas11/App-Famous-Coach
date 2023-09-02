@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import di.AppContainer;
-import di.FavoriteQuotesContainer;
-import di.MyApplication;
+import com.example.yourfamouscoach.di.AppContainer;
+import com.example.yourfamouscoach.di.FavoriteQuotesContainer;
+import com.example.yourfamouscoach.di.MyApplication;
 
 
 public class FavoriteQuotesScreen extends Fragment implements IFavoritesView {
