@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.firebase-perf'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -44,15 +46,20 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.firebase:firebase-messaging:23.1.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.4.1'
+    implementation 'com.google.firebase:firebase-analytics:21.3.0'
     def fragment_version = "1.6.1"
     def retrofit_version = "2.9.0"
     def gson_version = "2.9.0"
     def rx_java = "1.6"
     def room_version = "2.5.2"
+    def work_version = "2.8.1"
+
 
     //Firebase
-//    implementation platform('com.google.firebase:firebase-bom:32.2.2')
+    implementation platform('com.google.firebase:firebase-bom:32.2.2')
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-perf'
 //    implementation 'com.google.firebase:firebase-analytics'
 //    implementation 'com.google.firebase:firebase-ml-modeldownloader'
 
@@ -81,6 +88,9 @@ dependencies {
     implementation "androidx.room:room-rxjava3:$room_version"
     //Animations
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
+    //Worker
+    implementation "androidx.work:work-runtime:$work_version"
+    //implementation "androidx.work:work-rxjava2:$work_version"
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'

@@ -118,7 +118,7 @@ public class QuoteRepositoryImpl implements IQuotesRepository {
 
     @Override
     public Call<List<QuoteDto>> getSingleQuote(){
-        quoteRemote.getSingleQuote();
+        return quoteRemote.getSingleQuote();
     }
 
 }

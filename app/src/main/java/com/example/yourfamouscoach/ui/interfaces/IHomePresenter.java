@@ -2,7 +2,7 @@ package com.example.yourfamouscoach.ui.interfaces;
 
 public interface IHomePresenter {
 
-    void fetchData();
+    void fetchData(boolean needsToShowQuote);
 
     void fetchSpecificQuote(String emotion);
 
@@ -12,4 +12,6 @@ public interface IHomePresenter {
     void onFavClicked(String s, String toString, String currentItem);
 
     void onShareClicked();
+
+    void onNotificationQuote(String quote,String author);
 }

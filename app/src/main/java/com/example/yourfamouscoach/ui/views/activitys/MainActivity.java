@@ -1,6 +1,8 @@
 package com.example.yourfamouscoach.ui.views.activitys;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     private ActionBarDrawerToggle toggle;
 
     private int container;
-
+    Bundle argsForFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,15 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         //appContainer = ((MyApplication) getApplication()).appContainer;
         presenter = new MainPresenter(this);
         container = R.id.fragmentContainer;
+        if(getIntent().getExtras() != null){
+            String quoteExtra = getIntent().getExtras().getString("not","quote");
+            String authorExtra = getIntent().getExtras().getString("aut","aut");
+            argsForFragment = new Bundle();
+            argsForFragment.putString("quote",quoteExtra);
+            argsForFragment.putString("author",authorExtra);
+        }
         if (savedInstanceState == null) {
-            changeScreen(container, HomeScreen.class, null);
+            changeScreen(container, HomeScreen.class, argsForFragment);
         }
         initNavDrawerMenu();
     }
@@ -73,17 +82,17 @@ public class MainActivity extends AppCompatActivity implements IMainView {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.miAbout:
-                        changeScreen(container, AboutScreen.class, null);
+                        changeScreen(container, AboutScreen.class, argsForFragment);
                         break;
                     case R.id.miFavorites:
-                        changeScreen(container, FavoriteQuotesScreen.class, null);
+                        changeScreen(container, FavoriteQuotesScreen.class, argsForFragment);
                         break;
                     case R.id.miHome:
-                        changeScreen(container, HomeScreen.class, null);
+                        changeScreen(container, HomeScreen.class, argsForFragment);
                         ;
                         break;
                     case R.id.miSettings:
-                        changeScreen(container, SettingsScreen.class, null);
+                        changeScreen(container, SettingsScreen.class, argsForFragment);
                         break;
                     case R.id.miRateUs:
                         break;

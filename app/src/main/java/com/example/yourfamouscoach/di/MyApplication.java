@@ -11,7 +11,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
+import androidx.work.impl.WorkManagerImpl;
+
 import com.example.yourfamouscoach.R;
+import com.example.yourfamouscoach.notifications.NotificationWorker;
 import com.example.yourfamouscoach.notifications.QuoteAlarmNotification;
 
 import java.util.Calendar;
@@ -22,12 +29,13 @@ public class MyApplication extends Application {
     public static final String CHANNEL_ID = String.valueOf(R.string.quote_channel_id);
     public AppContainer appContainer;
 
+
     @Override
     public void onCreate() {
         super.onCreate();
         appContainer = new AppContainer(this);
         createNotificationChannel();
-        scheduleNotification();
+        sendNotification();
     }
 
     private void createNotificationChannel() {
@@ -42,14 +50,22 @@ public class MyApplication extends Application {
         }
     }
 
-    private void scheduleNotification(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 10);
-        Intent intent = new Intent(this, QuoteAlarmNotification.class);
-        PendingIntent notificationIntent = PendingIntent.getBroadcast(this,NOTIFICATION_ID,intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,notificationIntent);
+    private void scheduleNotification() {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTimeInMillis(System.currentTimeMillis());
+//        //calendar.set(Calendar.HOUR_OF_DAY, 10);
+//        Intent intent = new Intent(this, QuoteAlarmNotification.class);
+//        PendingIntent notificationIntent = PendingIntent.getBroadcast(this,NOTIFICATION_ID,intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+//        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 10000,notificationIntent);
+    }
+
+    private void sendNotification() {
+        WorkRequest getNofiy = new PeriodicWorkRequest.Builder(NotificationWorker.class,15,TimeUnit.SECONDS)
+                .build();
+        WorkManager workManager = WorkManager.getInstance(this);
+        workManager.enqueue(getNofiy);
+        //workManager.cancelAllWork();
     }
 
 }

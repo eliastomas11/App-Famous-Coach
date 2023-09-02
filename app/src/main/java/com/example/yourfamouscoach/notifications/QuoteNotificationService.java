@@ -12,40 +12,36 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 
 import com.example.yourfamouscoach.R;
-import com.example.yourfamouscoach.data.model.QuoteDto;
+import com.example.yourfamouscoach.data.datasources.remote.quotesource.service.ApiClient;
+import com.example.yourfamouscoach.data.datasources.remote.quotesource.service.ApiService;
 import com.example.yourfamouscoach.di.MyApplication;
-import com.example.yourfamouscoach.domain.interfaces.IQuotesRepository;
 import com.example.yourfamouscoach.ui.views.activitys.MainActivity;
 import com.example.yourfamouscoach.utils.StorageUtils;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class QuoteNotificationService {
 
     public static final int NOTIFICATION_ID = 1;
-    private IQuotesRepository quotesRepository;
+    private final ApiService apiService;
 
-    public QuoteNotificationService quoteNotificationService(IQuotesRepository quotesRepository) {
-        this.quotesRepository = quotesRepository;
+    public QuoteNotificationService () {
+        apiService = ApiClient.getApiClientInstance();
     }
 
 
-    private Notification createNotification(Context context, String quote) {
+    private Notification createNotification(Context context, String quote, String author) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("not",quote);
+        intent.putExtra("aut",author);
         PendingIntent pendingIntent;
         if (checkBuildPermissions(Build.VERSION_CODES.M, StorageUtils.GREATER)) {
-            pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+            pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         }else{
-            pendingIntent = PendingIntent.getActivity(context, 0, intent,0);
+            pendingIntent = PendingIntent.getActivity(context, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
         return new NotificationCompat.Builder(context, MyApplication.CHANNEL_ID)
-                .setContentTitle(context.getResources().getResourceName(R.string.quote_notification_title))
+                .setContentTitle(context.getResources().getString(R.string.quote_notification_title))
                 .setContentText(quote)
                 .setSmallIcon(R.drawable.buddha)
                 .setAutoCancel(true)
@@ -56,23 +52,27 @@ public class QuoteNotificationService {
                 .build();
     } //Pedir permisso api 33
 
-    public void showNotification(Context context,String quote){
+    public void makeNotification(Context context,String quote,String author){
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATION_ID,createNotification(context,quote));
+        notificationManager.notify(NOTIFICATION_ID,createNotification(context,quote,author));
     }
 
-    private String getTodaysQuote(){
-        quotesRepository.getSingleQuote().enqueue(new Callback<List<QuoteDto>>() {
-            @Override
-            public void onResponse(Call<List<QuoteDto>> call, Response<List<QuoteDto>> response) {
+    public void showNotification(Context context, String noty,String author){
+//        apiService.getQuoteForNotification().enqueue(new Callback<List<QuoteDto>>() {
+//            @Override
+//            public void onResponse(Call<List<QuoteDto>> call, Response<List<QuoteDto>> response) {
+//                if(response.body() != null){
+//                    makeNotification(context,response.body().get(0).getQuote(),response.body().get(0).getAuthor());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<QuoteDto>> call, Throwable t) {
+//                makeNotification(context,"Your quote is waiting for you","");
+//            }
+//        });
+        makeNotification(context,noty,author);
 
-            }
-
-            @Override
-            public void onFailure(Call<List<QuoteDto>> call, Throwable t) {
-
-            }
-        });
     }
 
 }

@@ -35,7 +35,7 @@ public class HomePresenter implements IHomePresenter {
     }
 
     @Override
-    public void fetchData() {
+    public void fetchData(boolean needsToShowQuote) {
         view.showProgressBar();
 
         getQuotesUseCase.getQuotes().subscribeOn(Schedulers.io())
@@ -48,10 +48,11 @@ public class HomePresenter implements IHomePresenter {
 
                     @Override
                     public void onSuccess(@NonNull List<Quote> quotes) {
-                        Log.i("SAVED", "saved again");
-                        view.showQuote(quotes.get(0).getQuote(), quotes.get(0).getAuthor());
-                        view.adaptText();
-                        view.showBuddha();
+                        if(needsToShowQuote){
+                            view.showQuote(quotes.get(0).getQuote(), quotes.get(0).getAuthor());
+                            view.adaptText();
+                            view.showBuddha();
+                        }
                         view.hideProgressBar();
                     }
 
@@ -130,5 +131,12 @@ public class HomePresenter implements IHomePresenter {
         view.shareQuote();
     }
 
+    @Override
+    public void onNotificationQuote(String quote,String author){
+        view.showBuddha();
+        view.showQuote(quote,author);
+        view.adaptText();
+
+    }
 
 }

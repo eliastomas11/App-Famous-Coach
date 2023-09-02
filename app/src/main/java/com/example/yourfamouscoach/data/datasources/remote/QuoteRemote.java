@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.example.yourfamouscoach.data.model.QuoteDto;
 import io.reactivex.rxjava3.core.Single;
+import retrofit2.Call;
 
 public class QuoteRemote {
 
@@ -19,6 +20,6 @@ public class QuoteRemote {
         return apiService.getQuotes();
     }
 
-    public Single<List<QuoteDto>> getSingleQuote(){ return apiService.getQuoteForNotification();}
+    public Call<List<QuoteDto>> getSingleQuote(){ return apiService.getQuoteForNotification();}
 
 }

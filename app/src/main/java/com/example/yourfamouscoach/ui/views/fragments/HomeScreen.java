@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,7 +85,12 @@ public class HomeScreen extends Fragment implements IHomeView {
         presenter = appContainer.providePresenter(this);
         originalTextSize = binding.tvQuote.getTextSize();
         presenter.onInitView();
-        presenter.fetchData();
+        if(getArguments() == null){
+            presenter.fetchData(true);
+        }else{
+            presenter.fetchData(false);
+            presenter.onNotificationQuote(getArguments().getString("quote"), getArguments().getString("author"));
+        }
 
         return binding.getRoot();
     }
@@ -95,6 +101,8 @@ public class HomeScreen extends Fragment implements IHomeView {
         binding = null;
         presenter = null;
     }
+
+
 
     @Override
     public void showQuote(String quoteText, String quoteAuthor) {
