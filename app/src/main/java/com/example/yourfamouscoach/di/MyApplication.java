@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
@@ -61,7 +63,9 @@ public class MyApplication extends Application {
     }
 
     private void sendNotification() {
-        WorkRequest getNofiy = new PeriodicWorkRequest.Builder(NotificationWorker.class,15,TimeUnit.SECONDS)
+        WorkRequest getNofiy = new PeriodicWorkRequest.Builder(NotificationWorker.class,1,TimeUnit.DAYS)
+                .setInitialDelay(1,TimeUnit.DAYS)
+                .setConstraints(new Constraints.Builder().setRequiredNetworkType(NetworkType.UNMETERED).build())
                 .build();
         WorkManager workManager = WorkManager.getInstance(this);
         workManager.enqueue(getNofiy);

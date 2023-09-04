@@ -9,6 +9,9 @@ import static com.example.yourfamouscoach.utils.StorageUtils.writeToFile;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -24,6 +27,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -50,6 +54,7 @@ import java.util.UUID;
 
 import com.example.yourfamouscoach.di.AppContainer;
 import com.example.yourfamouscoach.di.MyApplication;
+import com.example.yourfamouscoach.ui.views.QuoteWidget;
 import com.example.yourfamouscoach.utils.StorageUtils;
 
 
@@ -93,6 +98,17 @@ public class HomeScreen extends Fragment implements IHomeView {
         }
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(requireContext().getApplicationContext());
+        RemoteViews remoteViews = new RemoteViews(requireContext().getApplicationContext().getPackageName(), R.layout.quote_widget);
+        remoteViews.setTextViewText(R.id.appwidget_text, binding.tvQuote.getText());
+        appWidgetManager.partiallyUpdateAppWidget(appWidgetManager.getAppWidgetIds(new ComponentName(requireContext().getApplicationContext(), QuoteWidget.class)), remoteViews);
+
     }
 
     @Override
