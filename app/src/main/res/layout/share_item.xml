@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_image"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ivShareBuddha"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="16dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/buddha"
+        android:visibility="visible"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/tvShareQuote"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fontFamily="@font/sen"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:text="dsfs"
+        android:layout_margin="8dp"
+        android:includeFontPadding="true"
+        android:padding="12dp"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/tvShareAuthor"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:fontFamily="@font/sen"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textAlignment="center"
+        android:text="asdas"
+        android:layout_margin="8dp"
+        android:textStyle="italic|bold" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

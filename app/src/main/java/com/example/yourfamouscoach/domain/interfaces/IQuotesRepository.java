@@ -21,4 +21,6 @@ public interface IQuotesRepository {
     Single<List<Quote>> getFavoritesQuotes();
 
     Call<List<QuoteDto>> getSingleQuote();
+
+    Completable deleteQuote(Quote quote);
 }

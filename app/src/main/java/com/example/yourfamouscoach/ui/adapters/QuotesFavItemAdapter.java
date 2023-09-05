@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourfamouscoach.databinding.QuoteItemBinding;
+import com.example.yourfamouscoach.ui.interfaces.IFavoritesQuoteListView;
 import com.example.yourfamouscoach.ui.model.QuotePresentation;
 
 import java.util.List;
@@ -17,9 +18,12 @@ public class QuotesFavItemAdapter extends RecyclerView.Adapter<QuoteListItemView
     private final List<QuotePresentation> quotePresentationList;
     private final Context context;
 
-    public QuotesFavItemAdapter(Context context, List<QuotePresentation> quotePresentationList) {
+    private final IFavoritesQuoteListView favoritesQuoteListView;
+
+    public QuotesFavItemAdapter(Context context, List<QuotePresentation> quotePresentationList,IFavoritesQuoteListView favoritesQuoteListView) {
         this.context = context;
         this.quotePresentationList = quotePresentationList;
+        this.favoritesQuoteListView = favoritesQuoteListView;
     }
 
     @NonNull
@@ -31,7 +35,7 @@ public class QuotesFavItemAdapter extends RecyclerView.Adapter<QuoteListItemView
 
     @Override
     public void onBindViewHolder(@NonNull QuoteListItemViewHolder holder, int position) {
-        holder.bind(quotePresentationList.get(position));
+        holder.bind(quotePresentationList.get(position),favoritesQuoteListView);
     }
 
     @Override
@@ -42,17 +46,3 @@ public class QuotesFavItemAdapter extends RecyclerView.Adapter<QuoteListItemView
 
 }
 
-class QuoteListItemViewHolder extends RecyclerView.ViewHolder {
-
-    private QuoteItemBinding binding;
-
-    public QuoteListItemViewHolder(@NonNull QuoteItemBinding binding) {
-        super(binding.getRoot());
-        this.binding = binding;
-    }
-
-    public void bind(QuotePresentation quotePresentation) {
-        binding.tvQuotePreview.setText(quotePresentation.getQuote());
-        binding.tvQuoteAuthorPreview.setText(quotePresentation.getAuthor());
-    }
-}

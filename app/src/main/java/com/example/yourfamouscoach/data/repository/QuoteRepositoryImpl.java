@@ -121,4 +121,9 @@ public class QuoteRepositoryImpl implements IQuotesRepository {
         return quoteRemote.getSingleQuote();
     }
 
+    @Override
+    public Completable deleteQuote(Quote quote) {
+        return quoteLocal.deleteQuote(mapper.transformDomain(quote));
+    }
+
 }

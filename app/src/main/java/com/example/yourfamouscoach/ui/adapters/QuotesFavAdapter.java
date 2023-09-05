@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourfamouscoach.databinding.QuoteListItemBinding;
+import com.example.yourfamouscoach.ui.interfaces.IFavoritesQuoteListView;
 import com.example.yourfamouscoach.ui.model.QuotePresentation;
 import com.example.yourfamouscoach.ui.resources.Emojis;
 
@@ -23,11 +24,14 @@ public class QuotesFavAdapter extends RecyclerView.Adapter<QuotesFavAdapter.Quot
 
     private Context context;
 
-    public QuotesFavAdapter(List<QuotePresentation> quotesList, List<Emojis> emojisList, Context context) {
+    private IFavoritesQuoteListView favoritesQuoteListView;
+
+    public QuotesFavAdapter(List<QuotePresentation> quotesList, List<Emojis> emojisList, Context context,IFavoritesQuoteListView favoritesQuoteListView) {
         this.quotesList = quotesList;
         this.emojiList = emojisList;
         this.emojiList.removeIf(emojis -> quotesList.stream().noneMatch(quotePresentation -> emojis.toString().equalsIgnoreCase(quotePresentation.getEmotion())));
         this.context = context;
+        this.favoritesQuoteListView = favoritesQuoteListView;
     }
 
     @NonNull
@@ -41,7 +45,7 @@ public class QuotesFavAdapter extends RecyclerView.Adapter<QuotesFavAdapter.Quot
     public void onBindViewHolder(@NonNull QuoteViewHolder holder, int position) {
         holder.bind(emojiList.get(position), quotesList.stream().filter(quotePresentation ->
                         quotePresentation.getEmotion().equalsIgnoreCase(emojiList.get(position).toString()))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()),favoritesQuoteListView);
     }
 
     @Override
@@ -62,8 +66,8 @@ public class QuotesFavAdapter extends RecyclerView.Adapter<QuotesFavAdapter.Quot
         }
 
 
-        public void bind(Emojis emoji, List<QuotePresentation> quoteList) {
-            quotesFavItemAdapter = new QuotesFavItemAdapter(context, quoteList);
+        public void bind(Emojis emoji, List<QuotePresentation> quoteList, IFavoritesQuoteListView iFavoritesQuoteListView) {
+            quotesFavItemAdapter = new QuotesFavItemAdapter(context, quoteList,iFavoritesQuoteListView);
             quoteListItemBinding.rvFavQuoteEmotion.setText(emoji.toString());
             quoteListItemBinding.rvFavFilterQuote.setAdapter(quotesFavItemAdapter);
             quoteListItemBinding.rvFavFilterQuote.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));

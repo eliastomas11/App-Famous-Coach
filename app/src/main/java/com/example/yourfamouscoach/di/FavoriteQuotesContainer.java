@@ -1,5 +1,6 @@
 package com.example.yourfamouscoach.di;
 
+import com.example.yourfamouscoach.domain.usecase.favoritequotes.DeleteSavedQuote;
 import com.example.yourfamouscoach.ui.interfaces.IFavoritesView;
 import com.example.yourfamouscoach.ui.presenters.FavoritesQuotesPresenter;
 
@@ -8,11 +9,13 @@ import com.example.yourfamouscoach.domain.usecase.favoritequotes.GetQuoteList;
 
 public class FavoriteQuotesContainer {
     private final GetQuoteList getQuoteListUseCase;
+    private final DeleteSavedQuote deleteSavedQuoteUseCase;
     public FavoriteQuotesContainer(QuoteRepositoryImpl quoteRepository) {
         getQuoteListUseCase = new GetQuoteList(quoteRepository);
+        deleteSavedQuoteUseCase = new DeleteSavedQuote(quoteRepository);
     }
 
     public FavoritesQuotesPresenter providePresenter(IFavoritesView view){
-        return new FavoritesQuotesPresenter(view,getQuoteListUseCase);
+        return new FavoritesQuotesPresenter(view,getQuoteListUseCase,deleteSavedQuoteUseCase);
     }
 }

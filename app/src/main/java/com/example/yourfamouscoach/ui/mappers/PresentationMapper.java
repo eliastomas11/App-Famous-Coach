@@ -16,4 +16,8 @@ public class PresentationMapper {
     private static QuotePresentation quoteToPresentation(Quote quote){
         return new QuotePresentation(quote.getQuote(),quote.getAuthor(),quote.getEmotion());
     }
+
+    public static Quote mapToDomainPresentationQuote(QuotePresentation quotePresentation){
+        return new Quote(quotePresentation.getQuote(),quotePresentation.getAuthor(),quotePresentation.getEmotion());
+    }
 }

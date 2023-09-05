@@ -1,4 +1,4 @@
-package com.example.yourfamouscoach.ui.views;
+package com.example.yourfamouscoach.ui.views.widgets;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;

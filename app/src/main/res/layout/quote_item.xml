@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -21,13 +22,48 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvQuotePreview"
-        android:layout_marginTop="4dp"
         android:layout_alignStart="@id/tvQuotePreview"
+        android:layout_marginTop="4dp"
         android:text="Da vinci"
         android:textColor="#4E4E4E"
         android:textSize="18sp"
         android:textStyle="italic" />
 
+    <ImageView
+        android:id="@+id/ivCopyTextQuote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvQuotePreview"
+        android:layout_alignBaseline="@+id/tvQuoteAuthorPreview"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="8dp"
+        android:src="@drawable/copy_quote" />
+
+    <ImageView
+        android:id="@+id/ivShareSavedQuote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvQuotePreview"
+        android:layout_alignBaseline="@+id/tvQuoteAuthorPreview"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@id/ivCopyTextQuote"
+        android:src="@drawable/share"
+        app:tint="#C60D0D" />
+
+    <ImageView
+        android:id="@+id/ivDeleteSavedQuote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvQuotePreview"
+        android:layout_alignBaseline="@+id/tvQuoteAuthorPreview"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@id/ivShareSavedQuote"
+        android:src="@drawable/baseline_favorite_24"
+        app:tint="#C60D0D" />
 
 
 </RelativeLayout>

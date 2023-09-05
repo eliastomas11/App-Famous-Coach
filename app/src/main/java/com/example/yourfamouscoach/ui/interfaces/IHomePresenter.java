@@ -9,7 +9,7 @@ public interface IHomePresenter {
     void onInitView();
 
 
-    void onFavClicked(String s, String toString, String currentItem);
+    void onFavClicked(boolean saved,String s, String toString, String currentItem);
 
     void onShareClicked();
 

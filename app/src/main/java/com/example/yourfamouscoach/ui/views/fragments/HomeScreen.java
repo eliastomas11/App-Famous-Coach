@@ -10,7 +10,6 @@ import static com.example.yourfamouscoach.utils.StorageUtils.writeToFile;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -22,7 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,7 +52,7 @@ import java.util.UUID;
 
 import com.example.yourfamouscoach.di.AppContainer;
 import com.example.yourfamouscoach.di.MyApplication;
-import com.example.yourfamouscoach.ui.views.QuoteWidget;
+import com.example.yourfamouscoach.ui.views.widgets.QuoteWidget;
 import com.example.yourfamouscoach.utils.StorageUtils;
 
 
@@ -70,6 +68,8 @@ public class HomeScreen extends Fragment implements IHomeView {
     private ActivityResultLauncher<String[]> permissionLauncher;
     private boolean readPermission = false;
     private boolean writePermission = false;
+
+    private boolean isSaved = false;
 
     public HomeScreen() {
     }
@@ -216,7 +216,8 @@ public class HomeScreen extends Fragment implements IHomeView {
             presenter.fetchSpecificQuote(emojiList.get(binding.vpCarousel.getCurrentItem()).toString());
         });
         binding.ivFav.setOnClickListener(v -> {
-            presenter.onFavClicked(binding.tvQuote.getText().toString(),
+            isSaved = !isSaved;
+            presenter.onFavClicked(isSaved,binding.tvQuote.getText().toString(),
                     binding.tvAuthor.getText().toString(),
                     emojiList.get(binding.vpCarousel.getCurrentItem()).toString());
         });

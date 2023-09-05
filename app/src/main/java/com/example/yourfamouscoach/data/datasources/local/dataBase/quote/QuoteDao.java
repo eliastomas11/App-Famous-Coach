@@ -1,12 +1,14 @@
 package com.example.yourfamouscoach.data.datasources.local.dataBase.quote;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Query;
 
 import com.example.yourfamouscoach.data.datasources.local.dataBase.relations.QuoteWithEmotion;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
 @Dao
@@ -30,6 +32,9 @@ public interface QuoteDao {
 
     @Query("SELECT * FROM quote")
     Single<List<QuoteWithEmotion>> getQuoteWithEmotion();
+
+    @Delete
+    Completable deleteQuote(QuoteEntity quoteEntity);
 
 
 }

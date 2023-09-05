@@ -1,21 +1,39 @@
 package com.example.yourfamouscoach.ui.views.fragments;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static com.example.yourfamouscoach.utils.StorageUtils.LOWER;
+import static com.example.yourfamouscoach.utils.StorageUtils.checkBuildPermissions;
+
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.yourfamouscoach.R;
 import com.example.yourfamouscoach.databinding.FragmentSavedQuotesBinding;
 import com.example.yourfamouscoach.ui.adapters.QuotesFavAdapter;
+import com.example.yourfamouscoach.ui.interfaces.IFavoritesQuoteListView;
 import com.example.yourfamouscoach.ui.interfaces.IFavoritesQuotesPresenter;
 import com.example.yourfamouscoach.ui.interfaces.IFavoritesView;
 import com.example.yourfamouscoach.ui.model.QuotePresentation;
 import com.example.yourfamouscoach.ui.resources.Emojis;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +43,7 @@ import com.example.yourfamouscoach.di.FavoriteQuotesContainer;
 import com.example.yourfamouscoach.di.MyApplication;
 
 
-public class FavoriteQuotesScreen extends Fragment implements IFavoritesView {
+public class FavoriteQuotesScreen extends Fragment implements IFavoritesView, IFavoritesQuoteListView {
 
 
     private FragmentSavedQuotesBinding binding;
@@ -82,8 +100,75 @@ public class FavoriteQuotesScreen extends Fragment implements IFavoritesView {
 
     @Override
     public void showQuoteList(List<QuotePresentation> quotePresentationList) {
-        binding.rvFavQuotes.setAdapter(new QuotesFavAdapter(quotePresentationList,emojisList,requireContext()));
+        binding.rvFavQuotes.setAdapter(new QuotesFavAdapter(quotePresentationList,emojisList,requireContext(),this));
         binding.rvFavQuotes.setLayoutManager(new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false));
     }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(requireContext(),message,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void copyText(String quoteTextToCopy, String authorTextToCopy) {
+        ClipboardManager clipboardManager = (ClipboardManager) requireContext().getApplicationContext().getSystemService(CLIPBOARD_SERVICE);
+        clipboardManager.setPrimaryClip(ClipData.newPlainText("", "\"\"" + quoteTextToCopy + "\"\"" + "\n-" + authorTextToCopy));
+        if (checkBuildPermissions(Build.VERSION_CODES.S_V2, LOWER)) {
+            Toast.makeText(requireContext(), "Copied", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void shareQuoteSaved(String quote,String author) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("image/jpeg");
+        //intent.putExtra(Intent.EXTRA_STREAM, saveScreenBitmap(createBitmap()));
+        //intent.putExtra(Intent.EXTRA_STREAM,createBitmap(quote,author));
+        Bitmap bitmap = createBitmap(quote,author);
+        ByteArrayOutputStream bytesStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytesStream); // Comprimir el Bitmap en JPEG
+        String path = MediaStore.Images.Media.insertImage(requireContext().getContentResolver(), bitmap, "Title", null);
+        Uri imageUri = Uri.parse(path); //Usar lo mas actualizado que esta en hombe screen
+
+        intent.putExtra(Intent.EXTRA_STREAM, imageUri);
+        requireActivity().startActivity(Intent.createChooser(intent, "Share Quote"));
+    }
+
+    private void saveBitmap(){
+
+    }
+
+    private Bitmap createBitmap(String quote,String author){
+        LayoutInflater inflater = (LayoutInflater) requireContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.share_item, null);
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)); //Intentar binding
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        TextView quoteTextToShareview = view.findViewById(R.id.tvShareQuote);
+        TextView authorTextToShareview = view.findViewById(R.id.tvShareAuthor);
+        quoteTextToShareview.setText(quote);
+        authorTextToShareview.setText(author);
+        Bitmap screenBitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas screenView = new Canvas(screenBitmap);
+        view.draw(screenView);
+        return screenBitmap;
+    }
+
+    @Override
+    public void deleteClicked(QuotePresentation quotePresentation) {
+        presenter.onDeleteClicked(quotePresentation);
+    }
+
+    @Override
+    public void shareClicked(String quote, String author) {
+        presenter.onShareClicked(quote,author);
+    }
+
+    @Override
+    public void copyClicked(String quote,String author) {
+        presenter.onCopyClicked(quote,author);
+    }
+
 }
