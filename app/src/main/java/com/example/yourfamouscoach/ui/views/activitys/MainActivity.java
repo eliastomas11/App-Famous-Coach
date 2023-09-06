@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -34,12 +35,14 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         //appContainer = ((MyApplication) getApplication()).appContainer;
         presenter = new MainPresenter(this);
         container = R.id.fragmentContainer;
+        splashScreen.setKeepOnScreenCondition(() -> false);
         if(getIntent().getExtras() != null){
             String quoteExtra = getIntent().getExtras().getString("not","quote");
             String authorExtra = getIntent().getExtras().getString("aut","aut");

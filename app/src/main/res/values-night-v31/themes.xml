@@ -7,4 +7,11 @@
         <item name="appWidgetRadius">@android:dimen/system_app_widget_background_radius</item>
         <item name="appWidgetInnerRadius">@android:dimen/system_app_widget_inner_radius</item>
     </style>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#F2F3F5</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/app_icon</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.YourFamousCoach</item>
+    </style>
 </resources>
