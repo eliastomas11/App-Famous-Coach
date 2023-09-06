@@ -3,6 +3,7 @@ package com.example.yourfamouscoach.ui.presenters;
 import android.util.Log;
 
 import com.example.yourfamouscoach.domain.usecase.favoritequotes.DeleteSavedQuote;
+import com.example.yourfamouscoach.domain.usecase.homescreen.CheckSaved;
 import com.example.yourfamouscoach.ui.interfaces.IHomePresenter;
 import com.example.yourfamouscoach.ui.interfaces.IHomeView;
 import com.example.yourfamouscoach.ui.model.QuotePresentation;
@@ -16,7 +17,9 @@ import com.example.yourfamouscoach.domain.usecase.homescreen.SpecificQuote;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -32,12 +35,16 @@ public class HomePresenter implements IHomePresenter {
 
     private final DeleteSavedQuote deleteSavedQuoteUseCase;
 
-    public HomePresenter(IHomeView view, GetQuotes getQuotesUseCase, SaveQuote saveQuoteUseCase, SpecificQuote specificQuote,DeleteSavedQuote deleteSavedQuote) {
+    private final CheckSaved checkSavedUseCase;
+
+
+    public HomePresenter(IHomeView view, GetQuotes getQuotesUseCase, SaveQuote saveQuoteUseCase, SpecificQuote specificQuote, DeleteSavedQuote deleteSavedQuote, CheckSaved checkSavedUseCase) {
         this.view = view;
         this.getQuotesUseCase = getQuotesUseCase;
         this.saveQuoteUseCase = saveQuoteUseCase;
         this.specificQuoteUseCase = specificQuote;
         this.deleteSavedQuoteUseCase = deleteSavedQuote;
+        this.checkSavedUseCase = checkSavedUseCase;
     }
 
     @Override
@@ -55,6 +62,34 @@ public class HomePresenter implements IHomePresenter {
                     @Override
                     public void onSuccess(@NonNull List<Quote> quotes) {
                         if (needsToShowQuote) {
+                            checkIfIsSaved(quotes.get(0)).subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new SingleObserver<Boolean>() {
+                                        @Override
+                                        public void onSubscribe(@NonNull Disposable d) {
+
+                                        }
+
+                                        @Override
+                                        public void onSuccess(@NonNull Boolean aBoolean) {
+                                            view.hideProgressBar();
+                                            if (aBoolean) {
+                                                view.showFavSaved();
+                                                view.checkSavedState(true);
+
+                                            } else {
+                                                view.showFavUnsaved();
+                                                view.checkSavedState(false);
+
+                                            }
+
+                                        }
+
+                                        @Override
+                                        public void onError(@NonNull Throwable e) {
+
+                                        }
+                                    });
                             view.showQuote(quotes.get(0).getQuote(), quotes.get(0).getAuthor());
                             view.adaptText();
                             view.showBuddha();
@@ -85,8 +120,31 @@ public class HomePresenter implements IHomePresenter {
 
                     @Override
                     public void onSuccess(@NonNull Quote quote) {
-                        view.hideProgressBar();
-                        view.showFavUnsaved();
+                        checkIfIsSaved(quote).subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new SingleObserver<Boolean>() {
+                                    @Override
+                                    public void onSubscribe(@NonNull Disposable d) {
+
+                                    }
+
+                                    @Override
+                                    public void onSuccess(@NonNull Boolean aBoolean) {
+                                        if (aBoolean) {
+                                            view.showFavSaved();
+                                            view.checkSavedState(true);
+                                        } else {
+                                            view.showFavUnsaved();
+                                            view.checkSavedState(false);
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onError(@NonNull Throwable e) {
+
+                                    }
+                                });
                         QuotePresentation quotePresentation = QuoteMapper.mapDomainToPresentation(quote);
                         view.showQuote(quotePresentation.getQuote(), quotePresentation.getAuthor());
                         view.adaptText();
@@ -97,6 +155,11 @@ public class HomePresenter implements IHomePresenter {
 
                     }
                 });
+        view.hideProgressBar();
+    }
+
+    private Single<Boolean> checkIfIsSaved(Quote quote) {
+        return checkSavedUseCase.checkSaved(quote);
     }
 
     @Override
@@ -106,8 +169,9 @@ public class HomePresenter implements IHomePresenter {
 
     @Override
     public void onFavClicked(boolean saved, String quote, String author, String emotion) {
+        Quote quoteToDomain = QuoteMapper.mapPresentationToDomain(new QuotePresentation(quote, author), emotion);
         if (saved) {
-            saveQuoteUseCase.saveQuote(QuoteMapper.mapPresentationToDomain(new QuotePresentation(quote, author), emotion))
+            saveQuoteUseCase.saveQuote(quoteToDomain)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new CompletableObserver() {
@@ -130,7 +194,7 @@ public class HomePresenter implements IHomePresenter {
                         }
                     });
         } else {
-            deleteSavedQuoteUseCase.deleteSavedQuote(QuoteMapper.mapPresentationToDomain(new QuotePresentation(quote,author),emotion))
+            deleteSavedQuoteUseCase.deleteSavedQuote(QuoteMapper.mapPresentationToDomain(new QuotePresentation(quote, author), emotion))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new CompletableObserver() {

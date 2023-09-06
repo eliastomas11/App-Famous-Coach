@@ -23,4 +23,6 @@ public interface IQuotesRepository {
     Call<List<QuoteDto>> getSingleQuote();
 
     Completable deleteQuote(Quote quote);
+
+    Single<Boolean> checkSaved(Quote quote);
 }

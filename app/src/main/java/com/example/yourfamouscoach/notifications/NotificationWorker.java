@@ -30,7 +30,6 @@ public class NotificationWorker extends Worker {
 
     ApiService apiService;
     Context context;
-
     QuoteNotificationService quoteNotificationService;
 
     public NotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {

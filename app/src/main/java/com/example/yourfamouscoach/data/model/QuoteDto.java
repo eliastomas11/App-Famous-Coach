@@ -29,4 +29,6 @@ public class QuoteDto {
     public void setAuthor(String author) {
         this.author = author;
     }
+
+
 }

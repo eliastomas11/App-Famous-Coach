@@ -12,6 +12,8 @@ import com.example.yourfamouscoach.data.datasources.remote.QuoteRemote;
 import com.example.yourfamouscoach.data.datasources.remote.quotesource.service.ApiClient;
 import com.example.yourfamouscoach.data.mapper.QuoteDataMapper;
 import com.example.yourfamouscoach.data.repository.QuoteRepositoryImpl;
+import com.example.yourfamouscoach.domain.usecase.favoritequotes.DeleteSavedQuote;
+import com.example.yourfamouscoach.domain.usecase.homescreen.CheckSaved;
 import com.example.yourfamouscoach.domain.usecase.homescreen.GetQuotes;
 import com.example.yourfamouscoach.domain.usecase.homescreen.SaveQuote;
 import com.example.yourfamouscoach.domain.usecase.homescreen.SpecificQuote;
@@ -29,6 +31,9 @@ public class AppContainer {
     private final GetQuotes getQuotesUseCase;
     private final SaveQuote saveQuoteUseCase;
     private final SpecificQuote specificQuoteUseCase;
+
+    private final DeleteSavedQuote deleteSavedQuoteUseCase;
+    private final CheckSaved checkSavedUseCase;
     private final AiClient aiClient;
     private final QuoteDataMapper quoteDataMapper;
     private final QuoteMemCache quoteMemCache;
@@ -47,9 +52,11 @@ public class AppContainer {
         getQuotesUseCase = new GetQuotes(quotesRepository);
         saveQuoteUseCase = new SaveQuote(quotesRepository);
         specificQuoteUseCase = new SpecificQuote(quotesRepository);
+        checkSavedUseCase = new CheckSaved(quotesRepository);
+        deleteSavedQuoteUseCase = new DeleteSavedQuote(quotesRepository);
     }
 
     public IHomePresenter providePresenter(IHomeView view){
-        return quotePresenter = new HomePresenter(view,getQuotesUseCase, saveQuoteUseCase,specificQuoteUseCase);
+        return quotePresenter = new HomePresenter(view,getQuotesUseCase, saveQuoteUseCase,specificQuoteUseCase,deleteSavedQuoteUseCase,checkSavedUseCase);
     }
 }

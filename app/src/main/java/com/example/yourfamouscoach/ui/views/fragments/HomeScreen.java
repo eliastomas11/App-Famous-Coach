@@ -296,5 +296,9 @@ public class HomeScreen extends Fragment implements IHomeView {
         requireActivity().startActivity(Intent.createChooser(intent, "Share Quote"));
     }
 
+    @Override
+    public void checkSavedState(Boolean savedState) {
+        isSaved = savedState;
+    }
 
 }

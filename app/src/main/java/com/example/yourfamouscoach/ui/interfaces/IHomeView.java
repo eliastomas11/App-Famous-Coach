@@ -23,4 +23,6 @@ public interface IHomeView {
     void launchPermissions();
 
     void shareQuote();
+
+    void checkSavedState(Boolean savedState);
 }

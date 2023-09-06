@@ -31,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_margin="8dp"
             android:layout_gravity="center"
+            android:id="@+id/swNightMode"
             android:layout_height="wrap_content"/>
 
 
@@ -64,6 +65,7 @@
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="wrap_content"
             android:layout_margin="8dp"
+            android:id="@+id/swNotifications"
             android:layout_gravity="center"
             android:layout_height="wrap_content"/>
 

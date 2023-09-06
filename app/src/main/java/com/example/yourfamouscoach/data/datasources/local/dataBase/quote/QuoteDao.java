@@ -33,8 +33,9 @@ public interface QuoteDao {
     @Query("SELECT * FROM quote")
     Single<List<QuoteWithEmotion>> getQuoteWithEmotion();
 
-    @Delete
-    Completable deleteQuote(QuoteEntity quoteEntity);
+    @Query("DELETE FROM quote WHERE quote.quote = :quote")
+    Completable deleteQuote(String quote);
 
-
+    @Query("SELECT COUNT(*) FROM quote WHERE quote.quote = :quote")
+    Single<Integer> checkSaved(String quote);
 }

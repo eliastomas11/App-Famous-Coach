@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
                         ;
                         break;
                     case R.id.miSettings:
-                        changeScreen(container, SettingsScreen.class, argsForFragment);
+                        changeScreen(container, SettingsScreen.class, null);
                         break;
                     case R.id.miRateUs:
                         break;

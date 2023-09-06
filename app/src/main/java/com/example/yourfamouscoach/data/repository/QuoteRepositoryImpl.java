@@ -123,7 +123,14 @@ public class QuoteRepositoryImpl implements IQuotesRepository {
 
     @Override
     public Completable deleteQuote(Quote quote) {
-        return quoteLocal.deleteQuote(mapper.transformDomain(quote));
+        return quoteLocal.deleteQuote(quote.getQuote());
+    }
+
+    @Override
+    public Single<Boolean> checkSaved(Quote quote) {
+        return quoteLocal.checkSaved(quote.getQuote()).map(integer -> {
+            return integer > 0;
+        });
     }
 
 }

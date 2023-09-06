@@ -15,4 +15,5 @@ public class QuoteMemCache {
     public void saveQuotes(List<QuoteDto> quoteDtos){
         quoteList = quoteDtos;
     }
+
 }

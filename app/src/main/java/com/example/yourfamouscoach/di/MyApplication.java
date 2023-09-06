@@ -24,12 +24,15 @@ import com.example.yourfamouscoach.notifications.NotificationWorker;
 import com.example.yourfamouscoach.notifications.QuoteAlarmNotification;
 
 import java.util.Calendar;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class MyApplication extends Application {
 
     public static final String CHANNEL_ID = String.valueOf(R.string.quote_channel_id);
     public AppContainer appContainer;
+
+    public static final UUID NOTIFICATION_WORK_ID = UUID.randomUUID();
 
 
     @Override
@@ -53,23 +56,17 @@ public class MyApplication extends Application {
     }
 
     private void scheduleNotification() {
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTimeInMillis(System.currentTimeMillis());
-//        //calendar.set(Calendar.HOUR_OF_DAY, 10);
-//        Intent intent = new Intent(this, QuoteAlarmNotification.class);
-//        PendingIntent notificationIntent = PendingIntent.getBroadcast(this,NOTIFICATION_ID,intent,PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-//        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 10000,notificationIntent);
+
     }
 
     private void sendNotification() {
         WorkRequest getNofiy = new PeriodicWorkRequest.Builder(NotificationWorker.class,1,TimeUnit.DAYS)
                 .setInitialDelay(1,TimeUnit.DAYS)
+                .setId(NOTIFICATION_WORK_ID)
                 .setConstraints(new Constraints.Builder().setRequiredNetworkType(NetworkType.UNMETERED).build())
                 .build();
         WorkManager workManager = WorkManager.getInstance(this);
         workManager.enqueue(getNofiy);
-        //workManager.cancelAllWork();
     }
 
 }
