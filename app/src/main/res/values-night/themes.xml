@@ -1,8 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.YourFamousCoach" parent="Theme.Material3.DayNight">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="Base.Theme.YourFamousCoach" parent="Theme.MaterialComponents.Light">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- Definir el estilo de la barra de acción (action bar) -->
+        <item name="colorPrimary">@color/pink</item>
+        <item name="colorPrimaryDark">@color/pink_dark</item>
+        <item name="colorAccent">@color/light_blue</item>
+        <item name="android:textViewStyle">@style/CommonTextViews</item>
+        <item name="android:statusBarColor">@color/blue_night_dark</item>
+        <item name="android:navigationBarColor">@color/blue_night_dark</item>
+        <item name="cardViewStyle">@style/CardView.Common</item>
+        <item name="bottomAppBarStyle">@style/BottomAppBarCommon</item>
+
     </style>
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">

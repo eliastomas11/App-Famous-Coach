@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -22,6 +23,8 @@ import com.example.yourfamouscoach.ui.views.fragments.FavoriteQuotesScreen;
 import com.example.yourfamouscoach.ui.views.fragments.HomeScreen;
 import com.example.yourfamouscoach.ui.views.fragments.SettingsScreen;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements IMainView {
 
@@ -54,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements IMainView {
             changeScreen(container, HomeScreen.class, argsForFragment);
         }
         initNavDrawerMenu();
+        getSupportActionBar().hide();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
     }
 
     @Override

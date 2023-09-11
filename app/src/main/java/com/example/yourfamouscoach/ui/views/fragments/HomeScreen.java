@@ -122,7 +122,7 @@ public class HomeScreen extends Fragment implements IHomeView {
 
     @Override
     public void showQuote(String quoteText, String quoteAuthor) {
-        binding.tvQuote.setText(quoteText);
+        binding.tvQuote.setText("\"" + quoteText + "\"");
         binding.tvAuthor.setText(quoteAuthor);
     }
 
@@ -154,7 +154,6 @@ public class HomeScreen extends Fragment implements IHomeView {
 
     @Override
     public void initViews() {
-        initCarousel();
         initListeners();
     }
 
@@ -166,28 +165,11 @@ public class HomeScreen extends Fragment implements IHomeView {
 
     @Override
     public void showBuddha() {
-        binding.ivBuddha.setVisibility(View.VISIBLE);
-        YoYo.with(Techniques.FadeIn).duration(1500).playOn(binding.ivBuddha);
+        binding.ivLogo.setVisibility(View.VISIBLE);
+        YoYo.with(Techniques.FadeIn).duration(1500).playOn(binding.ivLogo);
     }
 
-    private void initCarousel() {
-        emojiList.addAll(Arrays.asList(Emojis.values()));
-        EmojiAdapter emojiAdapter = new EmojiAdapter(emojiList);
-        binding.vpCarousel.setAdapter(emojiAdapter);
-        binding.vpCarousel.setOffscreenPageLimit(5);
-        binding.vpCarousel.setClipToPadding(false);
-        binding.vpCarousel.setClipChildren(false);
-        binding.vpCarousel.setPageTransformer(new ViewPager2.PageTransformer() {
-            @Override
-            public void transformPage(@NonNull View page, float position) {
-                page.setAlpha(1 - Math.abs(position));
-                float scale = position == 0 ? 1f : 0.8f;
-                page.setScaleX(scale);
-                page.setScaleY(scale);
 
-            }
-        });
-    }
 
     @Override
     public void showFavSaved() {
@@ -213,13 +195,12 @@ public class HomeScreen extends Fragment implements IHomeView {
 
     private void initListeners() {
         binding.clScreen.setOnClickListener(v -> {
-            presenter.fetchSpecificQuote(emojiList.get(binding.vpCarousel.getCurrentItem()).toString());
+           // presenter.fetchSpecificQuote(emojiList.get(binding.vpCarousel.getCurrentItem()).toString());
         });
         binding.ivFav.setOnClickListener(v -> {
             isSaved = !isSaved;
             presenter.onFavClicked(isSaved,binding.tvQuote.getText().toString(),
-                    binding.tvAuthor.getText().toString(),
-                    emojiList.get(binding.vpCarousel.getCurrentItem()).toString());
+                    binding.tvAuthor.getText().toString(),"");
         });
         //binding.ivMenu.setOnClickListener(v -> presenter.onMenuClicked());
         binding.ivShareQuote.setOnClickListener(v -> presenter.onShareClicked());

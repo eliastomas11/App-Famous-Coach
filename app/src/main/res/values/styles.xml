@@ -9,4 +9,32 @@
         <item name="android:background">?android:attr/colorBackground</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
+
+    <style name="Base.Theme.YourFamousCoach.TextViewsH4">
+        <item name="android:textColor">@color/text_colorful</item>
+        <item name="android:textSize">34sp</item>
+    </style>
+
+    <style name="Base.Theme.YourFamousCoach.TextViewsH5">
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">24sp</item>
+        <item name="fontFamily">@font/bellefair</item>
+    </style>
+
+    <style name="CommonTextViews" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">@font/montserrat</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="CardView.Common">
+        <item name="cardBackgroundColor">@color/pink</item>
+        <item name="cardElevation">10dp</item>
+        <item name="cardCornerRadius">16dp</item>
+    </style>
+
+    <style name="BottomAppBarCommon">
+        <item name="backgroundTint">@color/white</item>
+    </style>
+
 </resources>
