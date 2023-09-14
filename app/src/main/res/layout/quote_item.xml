@@ -1,69 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="8dp">
 
-    <TextView
-        android:id="@+id/tvQuotePreview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:maxLines="1"
-        android:text="ASDASD"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        android:textStyle="bold|italic" />
-
-    <TextView
-        android:id="@+id/tvQuoteAuthorPreview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvQuotePreview"
-        android:layout_alignStart="@id/tvQuotePreview"
-        android:layout_marginTop="4dp"
-        android:text="Da vinci"
-        android:textColor="#4E4E4E"
-        android:textSize="18sp"
-        android:textStyle="italic" />
-
-    <ImageView
-        android:id="@+id/ivCopyTextQuote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvQuotePreview"
-        android:layout_alignBaseline="@+id/tvQuoteAuthorPreview"
-        android:layout_alignParentEnd="true"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:src="@drawable/copy_quote" />
-
-    <ImageView
-        android:id="@+id/ivShareSavedQuote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvQuotePreview"
-        android:layout_alignBaseline="@+id/tvQuoteAuthorPreview"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
-        android:layout_toStartOf="@id/ivCopyTextQuote"
-        android:src="@drawable/share"
-        app:tint="#C60D0D" />
-
-    <ImageView
-        android:id="@+id/ivDeleteSavedQuote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvQuotePreview"
-        android:layout_alignBaseline="@+id/tvQuoteAuthorPreview"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
-        android:layout_toStartOf="@id/ivShareSavedQuote"
-        android:src="@drawable/baseline_favorite_24"
-        app:tint="#C60D0D" />
+        >
 
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tvQuotePreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="Strong Survive"
+            style="@style/Base.Theme.YourFamousCoach.TextViewsH4"
+            android:textSize="32sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/tvQuoteAuthorPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvQuotePreview"
+            android:layout_alignStart="@id/tvQuotePreview"
+            android:layout_marginTop="4dp"
+            style="@style/Base.Theme.YourFamousCoach.TextViewsH5"
+            tools:text="da vinci"
+            android:maxLength="18"
+            android:ellipsize="end"
+            android:textStyle="italic"
+            android:textColor="#4E4E4E"
+             />
+
+        <ImageView
+            android:id="@+id/ivCopyTextQuote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvQuotePreview"
+            android:layout_alignBaseline="@+id/tvQuoteAuthorPreview"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/copy_quote"
+            app:tint="?attr/colorPrimaryDark" />
+
+        <ImageView
+            android:id="@+id/ivShareSavedQuote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvQuotePreview"
+            android:layout_alignBaseline="@+id/tvQuoteAuthorPreview"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/ivCopyTextQuote"
+            android:src="@drawable/share"
+            app:tint="?attr/colorPrimaryDark" />
+
+        <ImageView
+            android:id="@+id/ivDeleteSavedQuote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvQuotePreview"
+            android:layout_alignBaseline="@+id/tvQuoteAuthorPreview"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/ivShareSavedQuote"
+            android:src="@drawable/baseline_favorite_24"
+            app:tint="?attr/colorPrimaryDark" />
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

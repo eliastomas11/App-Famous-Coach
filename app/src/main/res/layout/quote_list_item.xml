@@ -2,14 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/rvFavQuoteEmotion"
         android:layout_width="match_parent"
+        tools:text="Happy"
         android:layout_height="wrap_content"
+        style="@style/Base.Theme.YourFamousCoach.TextViewsH4"
         android:layout_margin="8dp"
-        android:textSize="36sp" />
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFavFilterQuote"

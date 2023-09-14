@@ -1,17 +1,28 @@
 package com.example.yourfamouscoach.ui.views.activitys;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.example.yourfamouscoach.R;
 import com.example.yourfamouscoach.databinding.ActivityMainBinding;
@@ -21,7 +32,9 @@ import com.example.yourfamouscoach.ui.presenters.MainPresenter;
 import com.example.yourfamouscoach.ui.views.fragments.AboutScreen;
 import com.example.yourfamouscoach.ui.views.fragments.FavoriteQuotesScreen;
 import com.example.yourfamouscoach.ui.views.fragments.HomeScreen;
+import com.example.yourfamouscoach.ui.views.fragments.SettingsFragment;
 import com.example.yourfamouscoach.ui.views.fragments.SettingsScreen;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
@@ -30,8 +43,6 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
     private ActivityMainBinding binding;
     private IMainPresenter presenter;
-    //private AppContainer appContainer;
-    private ActionBarDrawerToggle toggle;
 
     private int container;
     Bundle argsForFragment = null;
@@ -41,72 +52,37 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE );
+
         setContentView(binding.getRoot());
-        //appContainer = ((MyApplication) getApplication()).appContainer;
         presenter = new MainPresenter(this);
         container = R.id.fragmentContainer;
         splashScreen.setKeepOnScreenCondition(() -> false);
-        if(getIntent().getExtras() != null){
-            String quoteExtra = getIntent().getExtras().getString("not","quote");
-            String authorExtra = getIntent().getExtras().getString("aut","aut");
+
+        if (getIntent().getExtras() != null) {
+            String quoteExtra = getIntent().getExtras().getString("not", "quote");
+            String authorExtra = getIntent().getExtras().getString("aut", "aut");
             argsForFragment = new Bundle();
-            argsForFragment.putString("quote",quoteExtra);
-            argsForFragment.putString("author",authorExtra);
+            argsForFragment.putString("quote", quoteExtra);
+            argsForFragment.putString("author", authorExtra);
         }
         if (savedInstanceState == null) {
             changeScreen(container, HomeScreen.class, argsForFragment);
         }
-        initNavDrawerMenu();
-        getSupportActionBar().hide();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            presenter.onBackMenuPressed();
-        } else {
-            super.onBackPressed();
-
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    private void initNavDrawerMenu() {
-        toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, R.string.openNavDrawer, R.string.closeNavDrawer);
-        binding.drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        binding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        binding.btmNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.miAbout:
-                        changeScreen(container, AboutScreen.class, argsForFragment);
+                    case R.id.imHome:
+                        changeScreen(R.id.fragmentContainer, HomeScreen.class, argsForFragment);
                         break;
-                    case R.id.miFavorites:
-                        changeScreen(container, FavoriteQuotesScreen.class, argsForFragment);
+                    case R.id.imFavorites:
+                        changeScreen(R.id.fragmentContainer, FavoriteQuotesScreen.class, null);
                         break;
-                    case R.id.miHome:
-                        changeScreen(container, HomeScreen.class, argsForFragment);
-                        ;
-                        break;
-                    case R.id.miSettings:
-                        changeScreen(container, SettingsScreen.class, null);
-                        break;
-                    case R.id.miRateUs:
-                        break;
-                    case R.id.miShareApp:
+                    case R.id.imSettings:
+                        changeScreen(R.id.fragmentContainer, SettingsFragment.class, null);
                         break;
                 }
                 return true;
@@ -126,24 +102,15 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     }
 
 
-    @Override
-    public void showDrawerMenu() {
-
-    }
-
-    @Override
-    public void hideDrawerMenu() {
-
-    }
-
     private <T extends Fragment> void changeScreen(int screen, Class<T> tClass, Bundle args) {
-        binding.drawerLayout.closeDrawer(GravityCompat.START);
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(screen, tClass, args)
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                 .addToBackStack(null)
                 .commit();
 
     }
+
 
 }

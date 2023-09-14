@@ -7,14 +7,15 @@
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
 
-    <color name="text_primary">#FFFFFF</color>
+    <color name="text_primary">#000000</color>
     <color name="text_secondary">#808080</color>
     <color name="text_colorful">#f3eeed</color>
 
     <color name="pink">#f2bba4</color>
-    <color name="pink_dark">#e4906c</color>
+    <color name="pink_dark">#A77059</color>
     <color name="pink_lighter">#f3eeed</color>
     <color name="light_blue">#a4dbf2</color>
     <color name="blue_night">#232232</color>
     <color name="blue_night_dark">#1F1F2E</color>
+
 </resources>

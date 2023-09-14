@@ -23,6 +23,7 @@
     <item
         android:id="@+id/imShareApp"
         android:icon="@drawable/share"
+
         android:iconTint="?attr/colorPrimaryDark"
         android:title="Share App">
     </item>

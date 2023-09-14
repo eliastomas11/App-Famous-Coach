@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="language_settings">Language</string>
+    <string name="notifications_settings">Notifications</string>
+    <string name="privacy_policy_settings">Privacy Policy</string>
+    <string name="rate_us_settings">Rate Us</string>
+    <string name="about_settings">About</string>
+</resources>

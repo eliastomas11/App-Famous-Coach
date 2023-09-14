@@ -1,0 +1,64 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:key="@string/notifications_settings"
+        app:title="@string/notifications_settings">
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/notifications_settings"
+            app:key="notification_key"
+            app:title="Enable Notifications" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="@string/rate_us_settings"
+        app:title="@string/rate_us_settings">
+
+        <Preference
+            app:icon="@drawable/star_rate"
+            app:key="rate_key"
+            app:summary="Help us by rating our application in the app store"
+            app:title="Rate our App" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        app:key="@string/privacy_policy_settings"
+        app:title="@string/privacy_policy_settings">
+
+        <Preference
+            app:icon="@drawable/privacy_settings"
+            app:key="privacy_pref"
+            app:summary="Adjust who can access your personal information and how it is shared within the application."
+            app:title="Adjust privacy settings" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="@string/terms_and_conditions_settings"
+        app:title="@string/terms_and_conditions_settings">
+
+        <Preference
+            app:icon="@drawable/terms_settings"
+            app:key="terms_pref"
+            app:summary="Read about the rules you need to follow when using the app"
+            app:title="Terms of Service" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="@string/about_settings"
+        app:title="@string/about_settings">
+
+        <Preference
+            app:icon="@drawable/about"
+            app:key="about_pref"
+            app:summary="Know about the app and how can you
+             contact the developers"
+            app:title="About us" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

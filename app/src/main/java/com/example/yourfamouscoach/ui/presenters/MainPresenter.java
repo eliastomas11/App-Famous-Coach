@@ -14,12 +14,11 @@ public class MainPresenter implements IMainPresenter {
 
     @Override
     public void onMenuClicked() {
-        view.showDrawerMenu();
     }
 
     @Override
     public void onBackMenuPressed() {
-        view.hideDrawerMenu();
+
     }
 
 

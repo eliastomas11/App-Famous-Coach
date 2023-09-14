@@ -6,4 +6,9 @@
     <string name="quote_notification_channel_description">notification to start app home screen</string>
     <string name="quote_channel_id">qc</string>
     <string name="quote_notification_title">Daily Motivation</string>
+    <string name="language_settings">Language</string>
+    <string name="notifications_settings">Notifications</string>
+    <string name="privacy_policy_settings">Privacy Policy</string>
+    <string name="rate_us_settings">Rate Us</string>
+    <string name="about_settings">About</string>
 </resources>
