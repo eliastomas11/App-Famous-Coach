@@ -1,7 +1,10 @@
 package com.example.yourfamouscoach.ui.views.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +14,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.example.yourfamouscoach.R;
+import com.example.yourfamouscoach.ui.views.activitys.MainActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
@@ -23,6 +29,23 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         getPreferenceManager().findPreference("terms_pref").setOnPreferenceClickListener( p -> changeScreen(TermsAndConditions.class,null));
 
     }
+
+    @NonNull
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.hideBottomAppBar();
+        
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onDestroyView() {
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.showBottomAppBar();
+        super.onDestroyView();
+    }
+
 
     private <T extends Fragment> boolean changeScreen(Class<T> tClass, Bundle args) {
         getParentFragmentManager().beginTransaction()

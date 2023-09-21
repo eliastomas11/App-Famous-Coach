@@ -17,5 +17,6 @@
     <color name="light_blue">#a4dbf2</color>
     <color name="blue_night">#232232</color>
     <color name="blue_night_dark">#1F1F2E</color>
+    <color name="transparent_color">#00FFFFFF</color>
 
 </resources>

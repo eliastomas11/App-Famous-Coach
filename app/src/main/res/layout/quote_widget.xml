@@ -2,6 +2,7 @@
     style="@style/Widget.YourFamousCoach.AppWidget.Container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blue_night_dark"
     android:id="@+id/rlWidgetLayout"
     android:theme="@style/Theme.YourFamousCoach.AppWidgetContainer">
 
@@ -10,14 +11,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:maxLines="5"
-        android:textColor="#FF0F0F"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/appwidget_text"
+        android:maxLines="5"
         android:text="@string/appwidget_text"
-        android:textSize="24sp"
+        style="@style/Base.Theme.YourFamousCoach.TextViewsH4"
         android:textStyle="bold|italic" />
 </RelativeLayout>

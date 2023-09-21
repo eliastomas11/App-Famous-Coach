@@ -25,4 +25,6 @@ public interface IHomeView {
     void shareQuote();
 
     void checkSavedState(Boolean savedState);
+
+    void showAuthorImage(String author,String quote);
 }

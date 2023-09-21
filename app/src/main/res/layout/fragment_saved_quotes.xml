@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:paddingBottom="?attr/actionBarSize"
     android:background="?attr/backgroundColor"
     tools:context=".ui.views.fragments.FavoriteQuotesScreen">

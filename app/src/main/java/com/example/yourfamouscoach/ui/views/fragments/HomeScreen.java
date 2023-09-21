@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,8 +53,11 @@ import java.util.UUID;
 
 import com.example.yourfamouscoach.di.AppContainer;
 import com.example.yourfamouscoach.di.MyApplication;
+import com.example.yourfamouscoach.ui.views.activitys.MainActivity;
 import com.example.yourfamouscoach.ui.views.widgets.QuoteWidget;
 import com.example.yourfamouscoach.utils.StorageUtils;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 
 public class HomeScreen extends Fragment implements IHomeView {
@@ -97,6 +101,14 @@ public class HomeScreen extends Fragment implements IHomeView {
             presenter.onNotificationQuote(getArguments().getString("quote"), getArguments().getString("author"));
         }
 
+        binding.clScreen.setOnClickListener(v -> {
+            MainActivity activity = (MainActivity) getActivity();
+            if (activity != null) {
+                Log.i("EMOTION",activity.getEmotion());
+                presenter.fetchSpecificQuote(activity.getEmotion());
+            }
+        });
+
         return binding.getRoot();
     }
 
@@ -114,6 +126,7 @@ public class HomeScreen extends Fragment implements IHomeView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Picasso.get().cancelRequest(binding.ivLogo);
         binding = null;
         presenter = null;
     }
@@ -122,6 +135,7 @@ public class HomeScreen extends Fragment implements IHomeView {
 
     @Override
     public void showQuote(String quoteText, String quoteAuthor) {
+        binding.cardView.setVisibility(View.VISIBLE);
         binding.tvQuote.setText("\"" + quoteText + "\"");
         binding.tvAuthor.setText(quoteAuthor);
     }
@@ -159,6 +173,7 @@ public class HomeScreen extends Fragment implements IHomeView {
 
     @Override
     public void showTextAnimations() {
+        YoYo.with(Techniques.FadeInUp).duration(500).playOn(binding.cardView);
         YoYo.with(Techniques.FadeInUp).duration(500).playOn(binding.tvQuote);
         YoYo.with(Techniques.FadeInUp).duration(500).playOn(binding.tvAuthor);
     }
@@ -188,6 +203,7 @@ public class HomeScreen extends Fragment implements IHomeView {
 
     @Override
     public void hideQuoteAndAuthorText() {
+        binding.cardView.setVisibility(View.INVISIBLE);
         binding.tvAuthor.setText("");
         binding.tvQuote.setText("");
     }
@@ -198,9 +214,10 @@ public class HomeScreen extends Fragment implements IHomeView {
            // presenter.fetchSpecificQuote(emojiList.get(binding.vpCarousel.getCurrentItem()).toString());
         });
         binding.ivFav.setOnClickListener(v -> {
+            MainActivity mainActivity = (MainActivity) requireActivity();
             isSaved = !isSaved;
             presenter.onFavClicked(isSaved,binding.tvQuote.getText().toString(),
-                    binding.tvAuthor.getText().toString(),"");
+                    binding.tvAuthor.getText().toString(),mainActivity.getEmotion());
         });
         //binding.ivMenu.setOnClickListener(v -> presenter.onMenuClicked());
         binding.ivShareQuote.setOnClickListener(v -> presenter.onShareClicked());
@@ -281,5 +298,26 @@ public class HomeScreen extends Fragment implements IHomeView {
     public void checkSavedState(Boolean savedState) {
         isSaved = savedState;
     }
+    @Override
+    public void showAuthorImage(String author,String quote){
+        Picasso.get().load(makeUrl(author)).into(binding.ivLogo, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        presenter.onImageLoad(author,quote);
+                    }
 
+                    @Override
+                    public void onError(Exception e) {
+                        binding.ivLogo.setImageResource(R.drawable.profile_pic_default_2);
+                        presenter.onImageLoad(author,quote);
+                    }
+                });
+    }
+
+    public String makeUrl(String author){
+        String modifyAuthorName = author;
+        modifyAuthorName = modifyAuthorName.replace("-","--").replace(".","_").replace(" ","-");
+        Log.i("AUTHOR",modifyAuthorName);
+        return "https://zenquotes.io/img/" + modifyAuthorName.toLowerCase() + ".jpg";
+    }
 }

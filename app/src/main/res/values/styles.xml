@@ -37,10 +37,13 @@
 
     <style name="BottomAppBarCommon">
         <item name="backgroundTint">@color/white</item>
+        <item name="fabCradleMargin">5dp</item>
+        <item name="fabCradleRoundedCornerRadius">50dp</item>
     </style>
 
     <style name="NavViewCommon">
         <item name="itemTextColor">@color/item_nav_color</item>
         <item name="itemIconTint">@color/item_nav_color</item>
     </style>
+
 </resources>

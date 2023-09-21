@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
+        android:visibility="invisible"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,15 +64,17 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivLogo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/logo_vectorized"
-        android:visibility="visible"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="60dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/profile_pic_default_2"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
-        app:tint="@color/white" />
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />
 
     <ImageView
         android:id="@+id/ivFav"

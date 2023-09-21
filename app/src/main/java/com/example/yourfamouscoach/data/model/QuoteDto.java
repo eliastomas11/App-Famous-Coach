@@ -9,6 +9,7 @@ public class QuoteDto {
     @SerializedName("a")
     private String author;
 
+
     public QuoteDto(String quote, String author) {
         this.quote = quote;
         this.author = author;

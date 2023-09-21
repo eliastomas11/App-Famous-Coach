@@ -25,6 +25,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import com.example.yourfamouscoach.utils.QuoteMapper;
+import com.squareup.picasso.Picasso;
 
 public class HomePresenter implements IHomePresenter {
 
@@ -90,11 +91,12 @@ public class HomePresenter implements IHomePresenter {
 
                                         }
                                     });
-                            view.showQuote(quotes.get(0).getQuote(), quotes.get(0).getAuthor());
-                            view.adaptText();
-                            view.showBuddha();
+                            //view.showQuote(quotes.get(0).getQuote(), quotes.get(0).getAuthor());
+                            view.showAuthorImage(quotes.get(0).getAuthor(),quotes.get(0).getQuote());
+                            //view.adaptText();
+                            //view.showBuddha();
                         }
-                        view.hideProgressBar();
+                        //view.hideProgressBar();
                     }
 
                     @Override
@@ -146,8 +148,9 @@ public class HomePresenter implements IHomePresenter {
                                     }
                                 });
                         QuotePresentation quotePresentation = QuoteMapper.mapDomainToPresentation(quote);
-                        view.showQuote(quotePresentation.getQuote(), quotePresentation.getAuthor());
-                        view.adaptText();
+                        view.showAuthorImage(quotePresentation.getAuthor(),quotePresentation.getQuote());
+//                        view.showQuote(quotePresentation.getQuote(), quotePresentation.getAuthor());
+//                        view.adaptText();
                     }
 
                     @Override
@@ -155,7 +158,7 @@ public class HomePresenter implements IHomePresenter {
 
                     }
                 });
-        view.hideProgressBar();
+       // view.hideProgressBar();
     }
 
     private Single<Boolean> checkIfIsSaved(Quote quote) {
@@ -231,6 +234,14 @@ public class HomePresenter implements IHomePresenter {
         view.showQuote(quote, author);
         view.adaptText();
 
+    }
+
+    @Override
+    public void onImageLoad(String author,String quote) {
+        view.hideProgressBar();
+        view.showQuote(quote, author);
+        view.adaptText();
+        view.showBuddha();
     }
 
 }

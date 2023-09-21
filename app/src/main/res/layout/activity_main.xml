@@ -3,43 +3,158 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:backgroundTint="@color/blue_night_dark"
     android:layout_height="match_parent">
+
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/btmAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:fabCradleMargin="5dp"
-        app:fabCradleRoundedCornerRadius="50dp">
+        >
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/btmNav"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/NavViewCommon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@android:color/transparent"
             app:elevation="0dp"
-            style="@style/NavViewCommon"
             app:labelVisibilityMode="selected"
             app:menu="@menu/bottom_menu" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fbEmotions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="Choose emotion"
         android:src="@drawable/random_emoji"
         app:backgroundTint="?attr/colorPrimary"
         app:layout_anchor="@id/btmAppBar"
-        android:contentDescription="Choose emotion" />
+        app:tint="?attr/colorPrimaryDark" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        app:layout_anchor="@id/fbEmotions">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbExcited"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:src="@drawable/excited_emoji"
+            android:visibility="invisible"
+            app:backgroundTint="?attr/colorPrimary"
+            app:fabCustomSize="50dp"
+
+            app:layout_constraintBottom_toTopOf="@+id/guideline4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.42"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="@+id/guideline4"
+            app:tint="?attr/colorPrimaryDark" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbAngry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:src="@drawable/angry_emoji"
+            app:backgroundTint="?attr/colorPrimary"
+            app:fabCustomSize="50dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/guideline4"
+            app:layout_constraintStart_toEndOf="@+id/fbHappy"
+            app:tint="?attr/colorPrimaryDark" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbSad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:contentDescription="Choose emotion"
+            android:src="@drawable/sad_emoji"
+            android:visibility="invisible"
+            app:backgroundTint="?attr/colorPrimary"
+            app:fabCustomSize="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline4"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintHorizontal_bias="0.58"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline4"
+            app:tint="?attr/colorPrimaryDark" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbHappy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:contentDescription="Choose emotion"
+            android:src="@drawable/happy_emoj"
+            android:visibility="invisible"
+            app:backgroundTint="?attr/colorPrimary"
+            app:fabCustomSize="50dp"
+
+            app:layout_constraintBottom_toTopOf="@+id/guideline5"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:tint="?attr/colorPrimaryDark" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbWorried"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:contentDescription="Choose emotion"
+            android:src="@drawable/worried_emoji"
+            android:visibility="invisible"
+            app:backgroundTint="?attr/colorPrimary"
+            app:fabCustomSize="50dp"
+            app:layout_anchorGravity="end"
+            app:layout_constraintBottom_toTopOf="@+id/guideline4"
+            app:layout_constraintEnd_toStartOf="@+id/fbHappy"
+            app:tint="?attr/colorPrimaryDark" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="179dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="232dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="164dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="155dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
