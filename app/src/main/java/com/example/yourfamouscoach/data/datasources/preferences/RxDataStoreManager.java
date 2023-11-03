@@ -3,35 +3,68 @@ package com.example.yourfamouscoach.data.datasources.preferences;
 import android.content.Context;
 
 import androidx.datastore.core.DataStoreFactory;
+import androidx.datastore.preferences.core.MutablePreferences;
 import androidx.datastore.preferences.core.Preferences;
+import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.preferences.rxjava3.RxPreferenceDataStoreBuilder;
 import androidx.datastore.rxjava3.RxDataStore;
 import androidx.datastore.rxjava3.RxDataStoreBuilder;
 
-public class RxDataStoreManager {
+import java.sql.Timestamp;
+import java.time.Instant;
 
-    private static RxDataStoreManager instance;
-    private final RxDataStore<Preferences> rxDataStore;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
+
+public class RxDataStoreManager {
+    private static RxDataStoreManager INSTANCE;
+    private RxDataStore<Preferences> dataStore;
+
+    public static final String notificationPrefKey = "NOTIFICATION_STATE";
+
+    private Preferences.Key<String> TIME_STAMP_KEY = new Preferences.Key<>("timestamp");
 
     private final String DATASTORE_NAME = "settings";
 
+    Preferences.Key<Boolean> NOTIF_PREF = PreferencesKeys.booleanKey(notificationPrefKey);
+
 
     private RxDataStoreManager(Context context) {
-        rxDataStore = new RxPreferenceDataStoreBuilder(context,DATASTORE_NAME).build();
+        dataStore = new RxPreferenceDataStoreBuilder(context,DATASTORE_NAME ).build();
     }
 
-    public static RxDataStoreManager getInstance(Context context) {
-        if (instance == null) {
-            synchronized (RxDataStoreManager.class) {
-                if (instance == null) {
-                    instance = new RxDataStoreManager(context);
-                }
-            }
+    public static synchronized RxDataStoreManager getInstance(Context context) {
+        if (INSTANCE == null) {
+            INSTANCE = new RxDataStoreManager(context);
         }
-        return instance;
+        return INSTANCE;
     }
 
-    public RxDataStore<Preferences> getDataStore() {
-        return rxDataStore;
+    private String getTimeStamp(){
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        return timestamp.toString();
     }
+
+    public Single<Preferences> saveTimeStampCacheRefresh(){
+        return dataStore.updateDataAsync(prefsIn -> {
+            MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
+            mutablePreferences.set(TIME_STAMP_KEY, getTimeStamp());
+            return Single.just(mutablePreferences);
+        });
+    }
+
+    public void saveNotifPref(Boolean value){
+        dataStore.updateDataAsync(prefsIn -> {
+            MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
+            mutablePreferences.set(NOTIF_PREF,value);
+            return Single.just(mutablePreferences);
+        });
+
+    }
+
+    public Flowable<Boolean> getNotifPref(){
+        Flowable<Boolean> notifPref = dataStore.data().map(prefs -> prefs.get(NOTIF_PREF));
+        return notifPref;
+    }
+
 }

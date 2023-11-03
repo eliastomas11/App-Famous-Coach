@@ -1,4 +1,4 @@
-package com.example.yourfamouscoach.notifications;
+package com.example.yourfamouscoach.data.notifications;
 
 import static com.example.yourfamouscoach.utils.StorageUtils.checkBuildPermissions;
 
@@ -50,7 +50,7 @@ public class QuoteNotificationService {
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .build();
-    } //Pedir permisso api 33
+    }
 
     public void makeNotification(Context context,String quote,String author){
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -58,19 +58,7 @@ public class QuoteNotificationService {
     }
 
     public void showNotification(Context context, String noty,String author){
-//        apiService.getQuoteForNotification().enqueue(new Callback<List<QuoteDto>>() {
-//            @Override
-//            public void onResponse(Call<List<QuoteDto>> call, Response<List<QuoteDto>> response) {
-//                if(response.body() != null){
-//                    makeNotification(context,response.body().get(0).getQuote(),response.body().get(0).getAuthor());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<QuoteDto>> call, Throwable t) {
-//                makeNotification(context,"Your quote is waiting for you","");
-//            }
-//        });
+
         makeNotification(context,noty,author);
 
     }

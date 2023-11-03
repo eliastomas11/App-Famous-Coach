@@ -8,5 +8,5 @@ import io.reactivex.rxjava3.core.Single;
 
 public interface AiService {
 
-    Single<List<AiResponseModel>> getAnswer(String emotions, List<QuoteDto> quoteList);
+    Single<AiResponseModel> getAnswer(String emotions, List<QuoteDto> quoteList);
 }

@@ -14,8 +14,9 @@ public class QuoteLocal {
 
     public static QuoteDatabase getDb(Context context) {
         if (instance == null) {
-             instance = Room.databaseBuilder(context, QuoteDatabase.class, DATABASE_NAME).
-                    createFromAsset("database/" + DATABASE_NAME + ".db")
+            instance = Room.databaseBuilder(context, QuoteDatabase.class, DATABASE_NAME)
+                    .createFromAsset("database/" + DATABASE_NAME + ".db")
+                    .fallbackToDestructiveMigrationOnDowngrade()
                     .build();
         }
         return instance;

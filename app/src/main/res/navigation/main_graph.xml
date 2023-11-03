@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/homeScreen">
+
+    <fragment
+        android:id="@+id/favoriteQuotesScreen"
+        android:name="com.example.yourfamouscoach.ui.views.fragments.FavoriteQuotesScreen"
+        android:label="favorite_quotes"
+        tools:layout="@layout/fragment_saved_quotes" >
+    </fragment>
+    <fragment
+        android:id="@+id/homeScreen"
+        android:name="com.example.yourfamouscoach.ui.views.fragments.HomeScreen"
+        android:label="home_screen">
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.yourfamouscoach.ui.views.fragments.SettingsFragment"
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_privacy_fragment"
+            app:destination="@id/privacy_fragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_termsAndConditionsFragments"
+            app:destination="@id/termsAndConditionsFragments" />
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutScreenFragment"
+            app:destination="@id/aboutScreenFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/aboutScreenFragment"
+        android:name="com.example.yourfamouscoach.ui.views.fragments.AboutScreen"
+        android:label="About">
+    </fragment>
+
+    <fragment
+        android:id="@+id/privacy_fragment"
+        android:name="com.example.yourfamouscoach.ui.views.fragments.PrivacyPolicy"
+        android:label="About">
+    </fragment>
+
+    <fragment
+        android:id="@+id/termsAndConditionsFragments"
+        android:name="com.example.yourfamouscoach.ui.views.fragments.TermsAndConditions"
+        android:label="Terms and Conditions">
+    </fragment>
+
+
+</navigation>

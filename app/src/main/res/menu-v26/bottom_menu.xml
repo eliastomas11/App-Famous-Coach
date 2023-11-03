@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/imHome"
+        android:id="@+id/homeScreen"
         android:icon="@drawable/home"
         android:iconTint="?attr/colorPrimaryDark"
         android:title="Home">
     </item>
 
     <item
-        android:id="@+id/imFavorites"
+        android:id="@+id/favoriteQuotesScreen"
         android:icon="@drawable/baseline_favorite_24"
         android:iconTint="?attr/colorPrimaryDark"
         android:title="Favorites">
@@ -30,7 +30,7 @@
     </item>
 
     <item
-        android:id="@+id/imSettings"
+        android:id="@+id/settingsFragment"
         android:icon="@drawable/settings"
         android:iconTint="?attr/colorPrimaryDark"
         android:title="Settings">

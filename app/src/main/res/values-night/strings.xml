@@ -1,14 +1,94 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">YourFamousCoach</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="openNavDrawer">Open</string>
     <string name="closeNavDrawer">Close</string>
     <string name="quote_notification_channel_name">quote_notification</string>
     <string name="quote_notification_channel_description">notification to start app home screen</string>
     <string name="quote_channel_id">qc</string>
     <string name="quote_notification_title">Daily Motivation</string>
+    <string name="appwidget_text">Last quote seen</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
     <string name="language_settings">Language</string>
     <string name="notifications_settings">Notifications</string>
     <string name="privacy_policy_settings">Privacy Policy</string>
+    <string name="terms_and_conditions_settings">Terms and Conditions</string>
     <string name="rate_us_settings">Rate Us</string>
     <string name="about_settings">About</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <!-- Settings -->
+    <!-- About -->
+    <string name="about_description">
+        Somos apasionados por inspirar y motivar a las personas a través de palabras poderosas y significativas. Nuestra aplicación te ofrece una colección cuidadosamente seleccionada de frases que te ayudarán a encontrar inspiración en cada momento de tu vida.\n\nYa sea que necesites un impulso de energía para empezar el día, o simplemente estés buscando una dosis de motivación para superar un desafío, nuestra aplicación tiene la frase perfecta para ti. Además, puedes compartir tus frases favoritas con tus amigos y seres queridos con tan solo un clic.\n\nEn Elias Dev, valoramos tu opinión y estamos siempre buscando maneras de mejorar tu experiencia. Si tienes sugerencias o comentarios, no dudes en ponerte en contacto con nosotros en eliastomasguerra@gmail.com. Estamos ansiosos por escuchar de ti y hacer de esta aplicación una herramienta aún más poderosa y significativa en tu vida.\n\n¡Descarga nuestra aplicación hoy y deja que las palabras te guíen hacia el éxito y la inspiración!
+    </string>
+
+    <!-- Terms and Conditions -->
+    <string name="terms_and_conditions_content">
+Por favor, lee estos términos y condiciones (&quot;Términos&quot;, &quot;Términos y Condiciones&quot;) cuidadosamente antes de usar la aplicación de frases (la &quot;Aplicación&quot;) operada por Elias Dev (&quot;nosotros&quot;, &quot;nuestro&quot;, o &quot;nos&quot;).
+
+Tu acceso y uso de la Aplicación está condicionado a tu aceptación y cumplimiento de estos Términos. Estos Términos se aplican a todos los visitantes, usuarios y otras personas que acceden o utilizan la Aplicación.
+
+Al acceder o utilizar la Aplicación, aceptas estar sujeto a estos Términos. Si no estás de acuerdo con alguna parte de los términos, entonces no tienes permiso para acceder a la Aplicación.
+
+Propiedad Intelectual
+
+La Aplicación y su contenido original, características y funcionalidades son propiedad de Elias Dev y están protegidos por derechos de autor, marcas registradas, patentes, secretos comerciales y otros derechos de propiedad intelectual o leyes de propiedad.
+
+Enlaces a Terceros
+
+Nuestra Aplicación puede contener enlaces a sitios web de terceros o servicios que no son propiedad ni están controlados por Elias Dev.
+
+Elias Dev no tiene control y no asume responsabilidad alguna por el contenido, políticas de privacidad o prácticas de sitios web o servicios de terceros. Además, reconoces y aceptas que Elias Dev no será responsable, directa o indirectamente, por cualquier daño o pérdida causados o supuestamente causados por o en conexión con el uso o la confianza en cualquier contenido, bienes o servicios disponibles en o a través de dichos sitios web o servicios.
+
+Cambios
+
+Nos reservamos el derecho, a nuestra sola discreción, de modificar o reemplazar estos Términos en cualquier momento. Si una revisión es importante, intentaremos proporcionar un aviso con al menos 30 días de antelación antes de que los nuevos términos entren en vigencia. Lo que constituye un cambio importante se determinará a nuestra sola discreción.
+
+Al continuar accediendo o utilizando nuestra Aplicación después de que esas revisiones entren en vigencia, aceptas estar sujeto a los términos revisados. Si no aceptas los nuevos términos, por favor deja de usar la Aplicación.
+
+Contacto
+
+Si tienes alguna pregunta sobre estos Términos, por favor contáctanos en eliastomasguerra@gmail.com.    </string>
+
+    <!-- Privacy Policy -->
+    <string name="privacy_policy_content"><![CDATA[
+Elias Dev ("nosotros", "nuestro", o "nos") opera la aplicación de frases (la "Aplicación"). Esta página informa a los usuarios de nuestra política con respecto a la recopilación, uso y divulgación de información personal si alguien decide utilizar nuestra Aplicación.
+
+Si decides utilizar nuestra Aplicación, aceptas la recopilación y el uso de información de acuerdo con esta política. La información personal que recopilamos se utiliza para proporcionar y mejorar la Aplicación. No utilizaremos ni compartiremos tu información con nadie, excepto como se describe en esta Política de Privacidad.
+
+Recopilación y Uso de Información
+
+No recopilamos información personal identificable de los usuarios que utilizan nuestra Aplicación.
+
+Cookies
+
+Nuestra aplicación no utiliza cookies.
+
+Seguridad
+
+Valoramos tu confianza al proporcionarnos tu información personal, por lo que estamos comprometidos a utilizar medios comercialmente aceptables para protegerla. Sin embargo, recuerda que ningún método de transmisión por Internet o método de almacenamiento electrónico es 100% seguro y confiable, y no podemos garantizar su absoluta seguridad.
+
+Cambios en esta Política de Privacidad
+
+Podemos actualizar nuestra Política de Privacidad de vez en cuando. Te recomendamos revisar esta página periódicamente para cualquier cambio. Te notificaremos de cualquier cambio publicando la nueva Política de Privacidad en esta página.
+
+Contacto
+
+Si tienes alguna pregunta o sugerencia sobre nuestra Política de Privacidad, no dudes en contactarnos en eliastomasguerra@gmail.com.    ]]></string>
+    <string name="default_quote_widget">“Realize that everything connects to everything else.”</string>
 </resources>

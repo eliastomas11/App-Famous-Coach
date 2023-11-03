@@ -13,16 +13,15 @@ import retrofit2.Call;
 public interface IQuotesRepository {
     Single<List<Quote>> getQuotes();
 
-    @NonNull Completable saveQuote(Quote quote);
+    Completable saveQuote(Quote quote);
 
     Single<Quote> getQuoteWithEmotion(String emotion);
-    void delete();
 
     Single<List<Quote>> getFavoritesQuotes();
-
-    Call<List<QuoteDto>> getSingleQuote();
 
     Completable deleteQuote(Quote quote);
 
     Single<Boolean> checkSaved(Quote quote);
+
+    Single<String> getAuthor(String quote);
 }

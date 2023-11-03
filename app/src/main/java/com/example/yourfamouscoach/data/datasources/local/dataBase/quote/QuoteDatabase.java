@@ -8,11 +8,13 @@ import com.example.yourfamouscoach.data.datasources.local.dataBase.emotion.Emoti
 import com.example.yourfamouscoach.data.datasources.local.dataBase.emotion.EmotionConverter;
 import com.example.yourfamouscoach.data.datasources.local.dataBase.emotion.EmotionEntity;
 
-@Database(entities = {QuoteEntity.class, EmotionEntity.class}, version = 1,exportSchema = true)
+@Database(entities = {QuoteEntity.class, EmotionEntity.class, QuoteCache.class}, version = 1,exportSchema = false)
 @TypeConverters({EmotionConverter.class})
 public abstract class QuoteDatabase extends RoomDatabase {
 
     public abstract QuoteDao getQuoteDao();
 
     public abstract EmotionsDao getEmotionDao();
+
+    public abstract QuoteCacheDao getQuoteCacheDao();
 }

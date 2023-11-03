@@ -1,48 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/background_image"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/ivShareBuddha"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewShareItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="24dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivLogoShareItem"
+        app:layout_constraintVertical_bias="0.212">
+
+        <TextView
+            android:id="@+id/tvQuoteShareItem"
+            style="@style/Base.Theme.YourFamousCoach.TextViewsH4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/bellefair"
+            android:gravity="center"
+            android:includeFontPadding="true"
+            android:padding="12dp"
+            app:fontFamily="@font/bellefair" />
+
+
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivLogoShareItem"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_margin="16dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/buddha"
-        android:visibility="visible"
-        app:tint="@color/white" />
+        android:layout_marginTop="60dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/profile_pic_default_2"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />
 
     <TextView
-        android:id="@+id/tvShareQuote"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fontFamily="@font/sen"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:text="dsfs"
-        android:layout_margin="8dp"
-        android:includeFontPadding="true"
-        android:padding="12dp"
-        android:textColor="@color/white"
-        android:textSize="36sp"
-        android:textStyle="bold|italic" />
-
-    <TextView
-        android:id="@+id/tvShareAuthor"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:fontFamily="@font/sen"
+        android:id="@+id/tvAuthorShareItem"
+        style="@style/Base.Theme.YourFamousCoach.TextViewsH5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bellefair"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textAlignment="center"
-        android:text="asdas"
-        android:layout_margin="8dp"
-        android:textStyle="italic|bold" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewShareItem" />
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

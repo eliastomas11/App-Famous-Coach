@@ -21,6 +21,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ import java.util.List;
 import com.example.yourfamouscoach.di.AppContainer;
 import com.example.yourfamouscoach.di.FavoriteQuotesContainer;
 import com.example.yourfamouscoach.di.MyApplication;
+import com.squareup.picasso.Picasso;
 
 
 public class FavoriteQuotesScreen extends Fragment implements IFavoritesView, IFavoritesQuoteListView {
@@ -124,36 +126,38 @@ public class FavoriteQuotesScreen extends Fragment implements IFavoritesView, IF
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.setType("image/jpeg");
-        //intent.putExtra(Intent.EXTRA_STREAM, saveScreenBitmap(createBitmap()));
-        //intent.putExtra(Intent.EXTRA_STREAM,createBitmap(quote,author));
         Bitmap bitmap = createBitmap(quote,author);
         ByteArrayOutputStream bytesStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytesStream); // Comprimir el Bitmap en JPEG
-        String path = MediaStore.Images.Media.insertImage(requireContext().getContentResolver(), bitmap, "Title", null);
+        String path = MediaStore.Images.Media.insertImage(requireContext().getContentResolver(), bitmap, "quote", null);
         Uri imageUri = Uri.parse(path); //Usar lo mas actualizado que esta en hombe screen
-
         intent.putExtra(Intent.EXTRA_STREAM, imageUri);
         requireActivity().startActivity(Intent.createChooser(intent, "Share Quote"));
     }
 
-    private void saveBitmap(){
-
-    }
 
     private Bitmap createBitmap(String quote,String author){
         LayoutInflater inflater = (LayoutInflater) requireContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.share_item, null);
         view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)); //Intentar binding
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-        TextView quoteTextToShareview = view.findViewById(R.id.tvShareQuote);
-        TextView authorTextToShareview = view.findViewById(R.id.tvShareAuthor);
+        TextView quoteTextToShareview = view.findViewById(R.id.tvQuoteShareItem);
+        TextView authorTextToShareview = view.findViewById(R.id.tvAuthorShareItem);
+        ImageView quoteImageToShareview = view.findViewById(R.id.ivLogoShareItem);
         quoteTextToShareview.setText(quote);
         authorTextToShareview.setText(author);
+        Picasso.get().load(makeUrl(author)).into(quoteImageToShareview);
         Bitmap screenBitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
         Canvas screenView = new Canvas(screenBitmap);
         view.draw(screenView);
         return screenBitmap;
+    }
+
+    private String makeUrl(String author) {
+        String modifyAuthorName = author;
+        modifyAuthorName = modifyAuthorName.replace("-", "--").replace(".", "_").replace(" ", "-");
+        return "https://zenquotes.io/img/" + modifyAuthorName.toLowerCase() + ".jpg";
     }
 
     @Override

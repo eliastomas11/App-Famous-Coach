@@ -1,10 +1,8 @@
 package com.example.yourfamouscoach.ui.interfaces;
 
-import com.example.yourfamouscoach.ui.model.QuotePresentation;
-
 public interface IHomePresenter {
 
-    void fetchData(boolean needsToShowQuote);
+    void fetchData();
 
     void fetchSpecificQuote(String emotion);
 
@@ -15,7 +13,15 @@ public interface IHomePresenter {
 
     void onShareClicked();
 
-    void onNotificationQuote(String quote,String author);
-
     void onImageLoad(String author,String quote);
+
+    void onErrorImageLoad(String author, String quote);
+
+    void onNotificationQuote(String quote, String author);
+
+    boolean isLoading();
+
+    void onDestroy();
+
+    void onRestore(String quote,String author,Boolean isSaved);
 }

@@ -23,14 +23,15 @@ public class AiClient implements com.example.yourfamouscoach.data.datasources.lo
 
 
     @Override
-    public Single<List<AiResponseModel>> getAnswer(String emotions, List<QuoteDto> quoteList) {
+    public Single<AiResponseModel> getAnswer(String emotions, List<QuoteDto> quoteList) {
 
         AiService service = new AiTest().getRetrofit();
         int bound1 = new Random().nextInt(7);
         int bound2 = 10 + new Random().nextInt( (quoteList.size() - 1) - 10);
-        return service.aiAnswer(new AiRequestModel(input + emotions + getQuoteStringList(quoteList).subList(bound1,bound2))).map(aiResponse -> {
-            aiResponse.get(0).setGenerated_text(cleanAnswer(aiResponse.get(0).getGenerated_text()));
-            return aiResponse;
+        return service.aiAnswer(new AiRequestModel(input + emotions + getQuoteStringList(quoteList).subList(bound1,bound2))).flatMap(aiResponse -> {
+            AiResponseModel aiResponseSingle = aiResponse.get(0);
+            aiResponseSingle.setGenerated_text(cleanAnswer(aiResponse.get(0).getGenerated_text()));
+            return Single.just(aiResponseSingle);
         });
     }
 

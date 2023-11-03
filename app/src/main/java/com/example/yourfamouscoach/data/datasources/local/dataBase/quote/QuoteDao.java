@@ -23,8 +23,8 @@ public interface QuoteDao {
     @Query("DELETE FROM quote")
     void deleteQuotes();
 
-    @Query("SELECT author FROM quote WHERE quote = :quoteToLook")
-    String getAuthor(String quoteToLook);
+    @Query("SELECT author FROM quote WHERE quote = :quoteToSearch")
+    String getAuthor(String quoteToSearch);
 
 
 //    @Query("SELECT * FROM quote, emotion WHERE quote.emotionId = emotion.id")

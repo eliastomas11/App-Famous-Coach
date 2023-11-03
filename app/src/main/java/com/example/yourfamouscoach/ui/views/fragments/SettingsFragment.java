@@ -9,51 +9,66 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.datastore.preferences.PreferencesProto;
+import androidx.datastore.preferences.core.Preferences;
+import androidx.datastore.rxjava3.RxDataStore;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
+import androidx.work.WorkManager;
 
 import com.example.yourfamouscoach.R;
+import com.example.yourfamouscoach.data.datasources.preferences.RxDataStoreManager;
+import com.example.yourfamouscoach.di.MyApplication;
 import com.example.yourfamouscoach.ui.views.activitys.MainActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
+    private SwitchPreferenceCompat notificationPref;
+    private Boolean isNotifActive = true;
+
+    private RxDataStoreManager preferencesManager;
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        preferencesManager.saveNotifPref(isNotifActive);
+
+    }
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
+        NavController navHostFragment = NavHostFragment.findNavController(this);
+        preferencesManager = RxDataStoreManager.getInstance(this.requireContext());
 
-        getPreferenceManager().findPreference("about_pref").setOnPreferenceClickListener( p -> changeScreen(AboutScreen.class,null));
-        getPreferenceManager().findPreference("privacy_pref").setOnPreferenceClickListener( p -> changeScreen(PrivacyPolicy.class,null));
-        getPreferenceManager().findPreference("terms_pref").setOnPreferenceClickListener( p -> changeScreen(TermsAndConditions.class,null));
+        getPreferenceManager().findPreference("about_pref").setOnPreferenceClickListener(p -> {
+            navHostFragment.navigate(R.id.action_settingsFragment_to_aboutScreenFragment);
+            return true;
+        });
+        getPreferenceManager().findPreference("privacy_pref").setOnPreferenceClickListener(p -> {
+            navHostFragment.navigate(R.id.action_settingsFragment_to_privacy_fragment);
+            return true;
+        });
+        getPreferenceManager().findPreference("terms_pref").setOnPreferenceClickListener(p -> {
+            navHostFragment.navigate(R.id.action_settingsFragment_to_termsAndConditionsFragments);
+            return true;
+        });
+        notificationPref = getPreferenceManager().findPreference("notification_pref");
+        if (notificationPref != null) {
+            notificationPref.setOnPreferenceChangeListener((preference, newValue) -> {
+                isNotifActive = false;
+                if (newValue instanceof Boolean) {
+                    isNotifActive = (Boolean) newValue;
+                }
+                return true;
+            });
+        }
+
 
     }
-
-    @NonNull
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.hideBottomAppBar();
-        
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    @Override
-    public void onDestroyView() {
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.showBottomAppBar();
-        super.onDestroyView();
-    }
-
-
-    private <T extends Fragment> boolean changeScreen(Class<T> tClass, Bundle args) {
-        getParentFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(R.id.fragmentContainer, tClass, args)
-                .addToBackStack(null)
-                .commit();
-        return true;
-    }
-
 }

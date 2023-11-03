@@ -2,8 +2,21 @@ package com.example.yourfamouscoach.ui.interfaces;
 
 public interface IMainPresenter {
 
-    void onMenuClicked();
+    void onUIstart();
 
-    void onBackMenuPressed();
+    void onFabClicked();
 
+    void onEmotionUpdate(String emotion);
+
+    void onSettingsNav();
+
+    void onHomeNav();
+
+    void onSavedNav();
+
+    String onEmotionRequest();
+
+    void onDataReceive(boolean loading);
+
+    boolean isLoading();
 }

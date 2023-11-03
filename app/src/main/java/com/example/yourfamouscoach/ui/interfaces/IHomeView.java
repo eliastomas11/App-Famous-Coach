@@ -11,7 +11,7 @@ public interface IHomeView {
     void initViews();
     void showTextAnimations();
 
-    void showBuddha();
+    void showAuthorImageAnimation();
 
     void showFavSaved();
     void showFavUnsaved();
@@ -26,5 +26,9 @@ public interface IHomeView {
 
     void checkSavedState(Boolean savedState);
 
-    void showAuthorImage(String author,String quote);
+    void showAuthorImage(String url,String quote,String author);
+
+    void hideLoadingScreen();
+
+    void showErrorAuthorImage();
 }

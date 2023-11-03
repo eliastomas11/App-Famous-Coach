@@ -2,6 +2,11 @@ package com.example.yourfamouscoach.ui.views.fragments;
 
 import static android.provider.MediaStore.VOLUME_EXTERNAL_PRIMARY;
 
+import static com.example.yourfamouscoach.utils.AppConstants.ARG_AUTHOR_KEY;
+import static com.example.yourfamouscoach.utils.AppConstants.ARG_QUOTE_KEY;
+import static com.example.yourfamouscoach.utils.AppConstants.AUTHOR_SAVED_KEY;
+import static com.example.yourfamouscoach.utils.AppConstants.FAV_SAVED_KEY;
+import static com.example.yourfamouscoach.utils.AppConstants.QUOTE_SAVED_KEY;
 import static com.example.yourfamouscoach.utils.StorageUtils.GREATER;
 import static com.example.yourfamouscoach.utils.StorageUtils.checkBuildPermissions;
 import static com.example.yourfamouscoach.utils.StorageUtils.checkPermission;
@@ -13,6 +18,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -32,27 +38,26 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.yourfamouscoach.R;
 import com.example.yourfamouscoach.databinding.FragmentHomeScreenBinding;
-import com.example.yourfamouscoach.ui.adapters.EmojiAdapter;
 import com.example.yourfamouscoach.ui.interfaces.IHomePresenter;
 import com.example.yourfamouscoach.ui.interfaces.IHomeView;
 import com.example.yourfamouscoach.ui.resources.Emojis;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 
 import com.example.yourfamouscoach.di.AppContainer;
 import com.example.yourfamouscoach.di.MyApplication;
+import com.example.yourfamouscoach.ui.views.activitys.HomeListener;
 import com.example.yourfamouscoach.ui.views.activitys.MainActivity;
 import com.example.yourfamouscoach.ui.views.widgets.QuoteWidget;
 import com.example.yourfamouscoach.utils.StorageUtils;
@@ -63,59 +68,58 @@ import com.squareup.picasso.Picasso;
 public class HomeScreen extends Fragment implements IHomeView {
 
     private FragmentHomeScreenBinding binding;
-
     private IHomePresenter presenter;
     private AppContainer appContainer;
-    private final ArrayList<Emojis> emojiList = new ArrayList<>();
     private float originalTextSize;
-
     private ActivityResultLauncher<String[]> permissionLauncher;
     private boolean readPermission = false;
     private boolean writePermission = false;
 
+    private HomeListener homeListener;
     private boolean isSaved = false;
 
     public HomeScreen() {
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        homeListener = (HomeListener) context;
+        super.onAttach(context);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appContainer = ((MyApplication) requireActivity().getApplication()).appContainer;
-        //launchPermissions();
+        presenter = appContainer.providePresenter(this);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         binding = FragmentHomeScreenBinding.inflate(inflater, container, false);
-        presenter = appContainer.providePresenter(this);
         originalTextSize = binding.tvQuote.getTextSize();
         presenter.onInitView();
-        if(getArguments() == null){
-            presenter.fetchData(true);
+        if (savedInstanceState != null) {
+            presenter.onRestore(savedInstanceState.getString(QUOTE_SAVED_KEY)
+                    ,savedInstanceState.getString(AUTHOR_SAVED_KEY),
+                    savedInstanceState.getBoolean(FAV_SAVED_KEY));
         }else{
-            presenter.fetchData(false);
-            presenter.onNotificationQuote(getArguments().getString("quote"), getArguments().getString("author"));
-        }
-
-        binding.clScreen.setOnClickListener(v -> {
-            MainActivity activity = (MainActivity) getActivity();
-            if (activity != null) {
-                Log.i("EMOTION",activity.getEmotion());
-                presenter.fetchSpecificQuote(activity.getEmotion());
+            if (getArguments() == null) {
+                presenter.fetchData();
+            } else {
+                //presenter.fetchData();
+                presenter.onNotificationQuote(getArguments().getString(ARG_QUOTE_KEY), getArguments().getString(ARG_AUTHOR_KEY));
             }
-        });
+        }
 
         return binding.getRoot();
     }
 
+
     @Override
     public void onStop() {
         super.onStop();
-
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(requireContext().getApplicationContext());
         RemoteViews remoteViews = new RemoteViews(requireContext().getApplicationContext().getPackageName(), R.layout.quote_widget);
         remoteViews.setTextViewText(R.id.appwidget_text, binding.tvQuote.getText());
@@ -127,16 +131,16 @@ public class HomeScreen extends Fragment implements IHomeView {
     public void onDestroyView() {
         super.onDestroyView();
         Picasso.get().cancelRequest(binding.ivLogo);
+        presenter.onDestroy();
         binding = null;
-        presenter = null;
+        //presenter = null;
     }
-
 
 
     @Override
     public void showQuote(String quoteText, String quoteAuthor) {
         binding.cardView.setVisibility(View.VISIBLE);
-        binding.tvQuote.setText("\"" + quoteText + "\"");
+        binding.tvQuote.setText(String.format("\"%s\"", quoteText));
         binding.tvAuthor.setText(quoteAuthor);
     }
 
@@ -179,11 +183,10 @@ public class HomeScreen extends Fragment implements IHomeView {
     }
 
     @Override
-    public void showBuddha() {
+    public void showAuthorImageAnimation() {
         binding.ivLogo.setVisibility(View.VISIBLE);
         YoYo.with(Techniques.FadeIn).duration(1500).playOn(binding.ivLogo);
     }
-
 
 
     @Override
@@ -211,15 +214,13 @@ public class HomeScreen extends Fragment implements IHomeView {
 
     private void initListeners() {
         binding.clScreen.setOnClickListener(v -> {
-           // presenter.fetchSpecificQuote(emojiList.get(binding.vpCarousel.getCurrentItem()).toString());
+            presenter.fetchSpecificQuote(homeListener.getActualEmotion());
         });
         binding.ivFav.setOnClickListener(v -> {
-            MainActivity mainActivity = (MainActivity) requireActivity();
             isSaved = !isSaved;
-            presenter.onFavClicked(isSaved,binding.tvQuote.getText().toString(),
-                    binding.tvAuthor.getText().toString(),mainActivity.getEmotion());
+            presenter.onFavClicked(isSaved, binding.tvQuote.getText().toString(),
+                    binding.tvAuthor.getText().toString(), homeListener.getActualEmotion());
         });
-        //binding.ivMenu.setOnClickListener(v -> presenter.onMenuClicked());
         binding.ivShareQuote.setOnClickListener(v -> presenter.onShareClicked());
     }
 
@@ -229,6 +230,7 @@ public class HomeScreen extends Fragment implements IHomeView {
         binding.getRoot().draw(screenView);
         return screenBitmap;
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private Uri saveScreenBitmap(Bitmap screenShot) {
@@ -257,7 +259,7 @@ public class HomeScreen extends Fragment implements IHomeView {
         if (checkPermission(readPermissionRequest, requireContext())) {
             readPermission = true;
         }
-        if (checkPermission(writePermissionRequest, requireContext()) || checkBuildPermissions(Build.VERSION_CODES.Q, StorageUtils.GREATER)) {
+        if (checkPermission(writePermissionRequest, requireContext()) || checkBuildPermissions(Build.VERSION_CODES.Q, GREATER)) {
             writePermission = true;
         }
         if (!readPermission) {
@@ -274,9 +276,11 @@ public class HomeScreen extends Fragment implements IHomeView {
                             Boolean isGranted = entry.getValue();
 
                             if (isGranted) {
-
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                    shareQuote();
+                                }
                             } else {
-
+                                Toast.makeText(requireContext(), "Permission Needed to share", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -298,26 +302,30 @@ public class HomeScreen extends Fragment implements IHomeView {
     public void checkSavedState(Boolean savedState) {
         isSaved = savedState;
     }
+
     @Override
-    public void showAuthorImage(String author,String quote){
-        Picasso.get().load(makeUrl(author)).into(binding.ivLogo, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        presenter.onImageLoad(author,quote);
-                    }
+    public void showAuthorImage(String url, String quote, String author) {
+        Picasso.get().load(url).into(binding.ivLogo, new Callback() {
+            @Override
+            public void onSuccess() {
+                presenter.onImageLoad(quote, author);
+            }
 
-                    @Override
-                    public void onError(Exception e) {
-                        binding.ivLogo.setImageResource(R.drawable.profile_pic_default_2);
-                        presenter.onImageLoad(author,quote);
-                    }
-                });
+            @Override
+            public void onError(Exception e) {
+                presenter.onErrorImageLoad(quote, author);
+            }
+        });
     }
 
-    public String makeUrl(String author){
-        String modifyAuthorName = author;
-        modifyAuthorName = modifyAuthorName.replace("-","--").replace(".","_").replace(" ","-");
-        Log.i("AUTHOR",modifyAuthorName);
-        return "https://zenquotes.io/img/" + modifyAuthorName.toLowerCase() + ".jpg";
+    @Override
+    public void hideLoadingScreen() {
+        homeListener.dataIsLoaded(false);
     }
+
+    @Override
+    public void showErrorAuthorImage() {
+        binding.ivLogo.setImageResource(R.drawable.profile_pic_default_2);
+    }
+
 }

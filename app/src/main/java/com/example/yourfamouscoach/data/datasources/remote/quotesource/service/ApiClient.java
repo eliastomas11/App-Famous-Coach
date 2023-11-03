@@ -6,13 +6,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    private static ApiService instance;
+    private static volatile ApiService instance;
     private static final String url = "https://zenquotes.io/api/";
 
     private ApiClient() {
     }
 
-    public static ApiService getApiClientInstance() {
+    public static synchronized ApiService getApiClientInstance() {
         if (instance == null) {
             instance = new Retrofit.Builder().
                     baseUrl(url).

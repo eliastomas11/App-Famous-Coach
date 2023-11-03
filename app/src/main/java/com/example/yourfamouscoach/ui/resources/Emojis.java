@@ -26,7 +26,8 @@ public enum Emojis {
             case SAD: return "sad";
             case WORRIED: return "worried";
             case EXCITED: return "excited";
-            default: return "angry";
+            case ANGRY: return "angry";
+            default: return "";
         }
     }
 }

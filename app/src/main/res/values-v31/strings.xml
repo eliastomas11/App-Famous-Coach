@@ -5,4 +5,5 @@
     <string name="privacy_policy_settings">Privacy Policy</string>
     <string name="rate_us_settings">Rate Us</string>
     <string name="about_settings">About</string>
+    <string name="default_quote_widget">“Realize that everything connects to everything else.”</string>
 </resources>

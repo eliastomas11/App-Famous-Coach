@@ -1,5 +1,6 @@
 package com.example.yourfamouscoach.ui.presenters;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.example.yourfamouscoach.domain.usecase.favoritequotes.DeleteSavedQuote;
@@ -7,8 +8,6 @@ import com.example.yourfamouscoach.domain.usecase.homescreen.CheckSaved;
 import com.example.yourfamouscoach.ui.interfaces.IHomePresenter;
 import com.example.yourfamouscoach.ui.interfaces.IHomeView;
 import com.example.yourfamouscoach.ui.model.QuotePresentation;
-
-import java.util.List;
 
 import com.example.yourfamouscoach.domain.model.Quote;
 import com.example.yourfamouscoach.domain.usecase.homescreen.GetQuotes;
@@ -21,11 +20,11 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import com.example.yourfamouscoach.utils.QuoteMapper;
-import com.squareup.picasso.Picasso;
 
 public class HomePresenter implements IHomePresenter {
 
@@ -35,9 +34,9 @@ public class HomePresenter implements IHomePresenter {
     private final SpecificQuote specificQuoteUseCase;
 
     private final DeleteSavedQuote deleteSavedQuoteUseCase;
-
     private final CheckSaved checkSavedUseCase;
 
+    private final CompositeDisposable subscribers = new CompositeDisposable();
 
     public HomePresenter(IHomeView view, GetQuotes getQuotesUseCase, SaveQuote saveQuoteUseCase, SpecificQuote specificQuote, DeleteSavedQuote deleteSavedQuote, CheckSaved checkSavedUseCase) {
         this.view = view;
@@ -49,60 +48,29 @@ public class HomePresenter implements IHomePresenter {
     }
 
     @Override
-    public void fetchData(boolean needsToShowQuote) {
+    public void fetchData() {
         view.showProgressBar();
-
         getQuotesUseCase.getQuotes().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<Quote>>() {
+                .subscribe(new SingleObserver<Quote>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-
+                        subscribers.add(d);
                     }
 
                     @Override
-                    public void onSuccess(@NonNull List<Quote> quotes) {
-                        if (needsToShowQuote) {
-                            checkIfIsSaved(quotes.get(0)).subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new SingleObserver<Boolean>() {
-                                        @Override
-                                        public void onSubscribe(@NonNull Disposable d) {
-
-                                        }
-
-                                        @Override
-                                        public void onSuccess(@NonNull Boolean aBoolean) {
-                                            view.hideProgressBar();
-                                            if (aBoolean) {
-                                                view.showFavSaved();
-                                                view.checkSavedState(true);
-
-                                            } else {
-                                                view.showFavUnsaved();
-                                                view.checkSavedState(false);
-
-                                            }
-
-                                        }
-
-                                        @Override
-                                        public void onError(@NonNull Throwable e) {
-
-                                        }
-                                    });
-                            //view.showQuote(quotes.get(0).getQuote(), quotes.get(0).getAuthor());
-                            view.showAuthorImage(quotes.get(0).getAuthor(),quotes.get(0).getQuote());
-                            //view.adaptText();
-                            //view.showBuddha();
-                        }
-                        //view.hideProgressBar();
+                    public void onSuccess(@NonNull Quote quote) {
+                        checkIfIsSaved(quote);
+                        view.showAuthorImage(makeUrl(quote.getAuthor()), quote.getQuote(), quote.getAuthor());
+                        view.hideLoadingScreen();
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
+                        Log.d("TAG", e.getMessage());
                         view.hideProgressBar();
-                        view.showQuote(e.getMessage(), "");
+                        view.showQuote("Unexpected Error try again later", "");
+                        view.hideLoadingScreen();
                     }
                 });
     }
@@ -117,52 +85,45 @@ public class HomePresenter implements IHomePresenter {
                 .subscribe(new SingleObserver<Quote>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-
+                        subscribers.add(d);
                     }
 
                     @Override
                     public void onSuccess(@NonNull Quote quote) {
-                        checkIfIsSaved(quote).subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new SingleObserver<Boolean>() {
-                                    @Override
-                                    public void onSubscribe(@NonNull Disposable d) {
-
-                                    }
-
-                                    @Override
-                                    public void onSuccess(@NonNull Boolean aBoolean) {
-                                        if (aBoolean) {
-                                            view.showFavSaved();
-                                            view.checkSavedState(true);
-                                        } else {
-                                            view.showFavUnsaved();
-                                            view.checkSavedState(false);
-                                        }
-
-                                    }
-
-                                    @Override
-                                    public void onError(@NonNull Throwable e) {
-
-                                    }
-                                });
+                        checkIfIsSaved(quote);
                         QuotePresentation quotePresentation = QuoteMapper.mapDomainToPresentation(quote);
-                        view.showAuthorImage(quotePresentation.getAuthor(),quotePresentation.getQuote());
-//                        view.showQuote(quotePresentation.getQuote(), quotePresentation.getAuthor());
-//                        view.adaptText();
+                        view.showAuthorImage(makeUrl(quotePresentation.getAuthor()), quotePresentation.getQuote(), quotePresentation.getAuthor());
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        Log.d("TAG", e.getMessage());
+                        view.hideProgressBar();
+                        view.showMessage("Error Loading the Quote");
                     }
                 });
-       // view.hideProgressBar();
     }
 
-    private Single<Boolean> checkIfIsSaved(Quote quote) {
-        return checkSavedUseCase.checkSaved(quote);
+    @SuppressLint("CheckResult")
+    private void checkIfIsSaved(Quote quote) {
+        String quoteText = String.format("\"%s\"", quote.getQuote());
+        Quote quoteToCheck = new Quote(quoteText,quote.getAuthor(),quote.getEmotion());
+        Disposable disposable = checkSavedUseCase.checkSaved(quoteToCheck)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(saved -> {
+                    if (saved) {
+                        view.showFavSaved();
+                        view.checkSavedState(true);
+                    } else {
+                        view.showFavUnsaved();
+                        view.checkSavedState(false);
+                    }
+                }, throwable -> {
+                    view.checkSavedState(false);
+                    view.showFavUnsaved();
+                });
+        subscribers.add(disposable);
     }
 
     @Override
@@ -180,7 +141,7 @@ public class HomePresenter implements IHomePresenter {
                     .subscribe(new CompletableObserver() {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
-
+                            subscribers.add(d);
                         }
 
                         @Override
@@ -203,7 +164,7 @@ public class HomePresenter implements IHomePresenter {
                     .subscribe(new CompletableObserver() {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
-
+                            subscribers.add(d);
                         }
 
                         @Override
@@ -229,19 +190,52 @@ public class HomePresenter implements IHomePresenter {
     }
 
     @Override
-    public void onNotificationQuote(String quote, String author) {
-        view.showBuddha();
-        view.showQuote(quote, author);
-        view.adaptText();
-
-    }
-
-    @Override
-    public void onImageLoad(String author,String quote) {
+    public void onImageLoad(String quote, String author) {
         view.hideProgressBar();
         view.showQuote(quote, author);
         view.adaptText();
-        view.showBuddha();
+        view.showAuthorImageAnimation();
     }
 
+    @Override
+    public void onErrorImageLoad(String quote, String author) {
+        view.hideProgressBar();
+        view.showQuote(quote, author);
+        view.adaptText();
+        view.showErrorAuthorImage();
+        view.showAuthorImageAnimation();
+    }
+
+    @Override
+    public void onNotificationQuote(String quote, String author) {
+        view.showAuthorImage(makeUrl(author), quote, author);
+    }
+
+    @Override
+    public boolean isLoading() {
+        return false;
+    }
+
+    @Override
+    public void onDestroy() {
+        subscribers.clear();
+    }
+
+    @Override
+    public void onRestore(String quote, String author, Boolean isSaved) {
+        view.showAuthorImage(makeUrl(author), quote, author);
+        view.checkSavedState(isSaved);
+        if(isSaved){
+            view.showFavSaved();
+        }else{
+            view.showFavUnsaved();
+        }
+    }
+
+
+    private String makeUrl(String author) {
+        String modifyAuthorName = author;
+        modifyAuthorName = modifyAuthorName.replace("-", "--").replace(".", "_").replace(" ", "-");
+        return "https://zenquotes.io/img/" + modifyAuthorName.toLowerCase() + ".jpg";
+    }
 }
